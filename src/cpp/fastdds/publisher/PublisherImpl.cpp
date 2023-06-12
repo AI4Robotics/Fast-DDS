@@ -283,6 +283,36 @@ DataWriter* PublisherImpl::create_datawriter_with_profile(
     return nullptr;
 }
 
+DataWriter* PublisherImpl::create_datawriter_with_payloadpool(
+        Topic* topic,
+        const DataWriterQos& qos,
+        std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool,
+        DataWriterListener* listener,
+        const StatusMask& mask)
+{
+    EPROSIMA_LOG_INFO(PUBLISHER, "CREATING WRITER IN TOPIC: " << topic->get_name());
+    //Look for the correct type registration
+    TypeSupport type_support = participant_->find_type(topic->get_type_name());
+
+    /// Preconditions
+    // Check the type was registered.
+    if (type_support.empty())
+    {
+        EPROSIMA_LOG_ERROR(PUBLISHER, "Type: " << topic->get_type_name() << " Not Registered");
+        return nullptr;
+    }
+
+    if (!DataWriterImpl::check_qos_including_resource_limits(qos, type_support))
+    {
+        return nullptr;
+    }
+
+    DataWriterImpl* impl = create_datawriter_impl(type_support, topic, qos, listener);
+    DataWriter* writer = create_datawriter(topic, impl, mask);
+    writer->set_payloadpool(payloadpool);
+    return writer;
+}
+
 ReturnCode_t PublisherImpl::delete_datawriter(
         const DataWriter* writer)
 {

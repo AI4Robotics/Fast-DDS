@@ -179,6 +179,23 @@ public:
             const StatusMask& mask = StatusMask::all());
 
     /**
+     * This operation creates a DataWriter. The returned DataWriter will be attached and belongs to the Publisher.
+     *
+     * @param topic Topic the DataWriter will be listening
+     * @param qos QoS of the DataWriter.
+     * @param payloadpool Shared pointer to the payload pool (default: nullptr).
+     * @param listener Pointer to the listener (default: nullptr).
+     * @param mask StatusMask that holds statuses the listener responds to (default: all).
+     * @return Pointer to the created DataWriter. nullptr if failed.
+     */
+    RTPS_DllAPI DataWriter* create_datawriter_with_payloadpool(
+            Topic* topic,
+            const DataWriterQos& qos,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool,
+            DataWriterListener* listener = nullptr,
+            const StatusMask& mask = StatusMask::all());
+
+    /**
      * This operation deletes a DataWriter that belongs to the Publisher.
      *
      * The delete_datawriter operation must be called on the same Publisher object used to create the DataWriter.
