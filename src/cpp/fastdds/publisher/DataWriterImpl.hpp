@@ -334,7 +334,7 @@ public:
             DataWriterListener* listener);
 
     ReturnCode_t set_payloadpool(
-            std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool);
+            fastrtps::rtps::IPayloadPool* payloadpool);
 
     /**
      * This operation can be used to retrieve the instance key that corresponds to an
@@ -390,6 +390,9 @@ public:
      */
     void filter_is_being_removed(
             const char* filter_class_name);
+
+private:
+    bool is_custom_payloadpool = false;
 
 protected:
 

@@ -286,7 +286,7 @@ DataWriter* PublisherImpl::create_datawriter_with_profile(
 DataWriter* PublisherImpl::create_datawriter_with_payloadpool(
         Topic* topic,
         const DataWriterQos& qos,
-        std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool,
+        fastrtps::rtps::IPayloadPool* payloadpool,
         DataWriterListener* listener,
         const StatusMask& mask)
 {

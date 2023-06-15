@@ -442,7 +442,7 @@ public:
      * @return RETCODE_OK
      */
     RTPS_DllAPI ReturnCode_t set_payloadpool(
-            std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool);
+            fastrtps::rtps::IPayloadPool* payloadpool);
 
     /**
      * @brief This operation requests the middleware to delete the data (the actual deletion is postponed until there is no

@@ -25,7 +25,6 @@
 #include <fastdds/dds/publisher/qos/PublisherQos.hpp>
 #include <fastdds/dds/publisher/DataWriter.hpp>
 #include <fastdds/dds/publisher/qos/DataWriterQos.hpp>
-#include <fastdds/dds/common/PayloadPool.hpp>
 #include <rtps/history/TopicPayloadPoolRegistry.hpp>
 
 #include <thread>
@@ -110,12 +109,12 @@ bool HelloWorldPublisher::init(
     }
 
     // CREATE CUSTOM TOPIC PAYLOAD POOL
-    eprosima::fastdds::dds::PayloadPool* payload = new PayloadPool();
+    payloadpool = new PayloadPool();
 
     writer_ = publisher_->create_datawriter_with_payloadpool(
         topic_,
         wqos,
-        payload,
+        payloadpool,
         &listener_,
         StatusMask::all());
 

@@ -24,6 +24,7 @@
 
 #include <fastdds/dds/publisher/DataWriterListener.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
+#include <fastdds/dds/common/PayloadPool.hpp>
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 
 class HelloWorldPublisher
@@ -90,6 +91,8 @@ private:
             uint32_t sleep);
 
     eprosima::fastdds::dds::TypeSupport type_;
+
+    eprosima::fastdds::dds::PayloadPool* payloadpool;
 };
 
 

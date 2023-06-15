@@ -249,7 +249,7 @@ ReturnCode_t DataWriter::set_listener(
 }
 
 ReturnCode_t DataWriter::set_payloadpool(
-        std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool)
+        fastrtps::rtps::IPayloadPool* payloadpool)
 {
     return impl_->set_payloadpool(payloadpool);
 }

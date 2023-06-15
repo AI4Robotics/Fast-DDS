@@ -19,7 +19,9 @@
 #ifndef DDS_PAYLOADPOOL_HPP
 #define DDS_PAYLOADPOOL_HPP
 
-//#include <fastdds/rtps/history/IPayloadPool.h>
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
 
 namespace eprosima {
 namespace fastdds {
@@ -29,8 +31,67 @@ class PayloadPool : public eprosima::fastrtps::rtps::IPayloadPool
 {
 public:
 
+    ~PayloadPool() = default;
 
+    bool get_payload(
+            unsigned int size,
+            eprosima::fastrtps::rtps::CacheChange_t& cache_change)
+    {
+        // Reserve new memory for the payload buffer
+        unsigned char* payload = new unsigned char[size];
 
+        // Assign the payload buffer to the CacheChange and update sizes
+        cache_change.serializedPayload.data = payload;
+        cache_change.serializedPayload.length = size;
+        cache_change.serializedPayload.max_size = size;
+
+        // Tell the CacheChange who needs to release its payload
+        cache_change.payload_owner(this);
+
+        return true;
+    }
+
+    bool get_payload(
+            eprosima::fastrtps::rtps::SerializedPayload_t& data,
+            eprosima::fastrtps::rtps::IPayloadPool*& data_owner,
+            eprosima::fastrtps::rtps::CacheChange_t& cache_change)
+    {
+        // Reserve new memory for the payload buffer
+        unsigned char* payload = new unsigned char[data.length];
+
+        // Copy the data
+        memcpy(payload, data.data, data.length);
+
+        // Assign the payload buffer to the CacheChange and update sizes
+        cache_change.serializedPayload.data = payload;
+        cache_change.serializedPayload.length = data.length;
+        cache_change.serializedPayload.max_size = data.length;
+
+        // Tell the CacheChange who needs to release its payload
+        cache_change.payload_owner(this);
+
+        return true;
+    }
+
+    bool release_payload(
+            eprosima::fastrtps::rtps::CacheChange_t& cache_change)
+    {
+        // Ensure precondition
+        assert(this == cache_change.payload_owner());
+
+        // Dealloc the buffer of the payload
+        delete[] cache_change.serializedPayload.data;
+
+        // Reset sizes and pointers
+        cache_change.serializedPayload.data = nullptr;
+        cache_change.serializedPayload.length = 0;
+        cache_change.serializedPayload.max_size = 0;
+
+        // Reset the owner of the payload
+        cache_change.payload_owner(nullptr);
+
+        return true;
+    }
 };
 
 }  // namespace dds
