@@ -392,6 +392,7 @@ public:
             const char* filter_class_name);
 
 private:
+
     bool is_custom_payloadpool = false;
 
 protected:

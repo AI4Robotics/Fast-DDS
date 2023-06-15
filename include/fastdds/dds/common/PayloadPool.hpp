@@ -92,6 +92,7 @@ public:
 
         return true;
     }
+
 };
 
 }  // namespace dds
