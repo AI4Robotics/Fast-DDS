@@ -436,15 +436,6 @@ public:
             const StatusMask& mask);
 
     /**
-     * Modifies the DataWriterPayloadPool.
-     *
-     * @param payloadpool new value for the DataWriterPayloadPool
-     * @return RETCODE_OK
-     */
-    RTPS_DllAPI ReturnCode_t set_payloadpool(
-            std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool);
-
-    /**
      * @brief This operation requests the middleware to delete the data (the actual deletion is postponed until there is no
      * more use for that data in the whole system). In general, applications are made aware of the deletion by means of
      * operations on the DataReader objects that already knew that instance. This operation does not modify the value of

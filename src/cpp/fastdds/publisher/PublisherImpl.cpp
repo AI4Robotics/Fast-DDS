@@ -309,7 +309,7 @@ DataWriter* PublisherImpl::create_datawriter(
 
     DataWriterImpl* impl = create_datawriter_impl(type_support, topic, qos, listener);
     DataWriter* writer = create_datawriter(topic, impl, mask);
-    writer->set_payloadpool(payloadpool);
+    impl->set_payloadpool(payloadpool);
     return writer;
 }
 
