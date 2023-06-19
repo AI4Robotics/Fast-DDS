@@ -120,6 +120,17 @@ DataReader* Subscriber::create_datareader_with_profile(
     return impl_->create_datareader_with_profile(topic, profile_name, listener, mask);
 }
 
+DataReader* Subscriber::create_datareader(
+        TopicDescription* topic,
+        const DataReaderQos& reader_qos,
+        std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payload_pool,
+        DataReaderListener* listener,
+        const StatusMask& mask)
+{
+    return impl_->create_datareader(topic, reader_qos, payload_pool, listener, mask);
+}
+
+
 ReturnCode_t Subscriber::delete_datareader(
         const DataReader* reader)
 {

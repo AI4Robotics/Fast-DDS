@@ -92,7 +92,7 @@ private:
 
     eprosima::fastdds::dds::TypeSupport type_;
 
-    std::shared_ptr<PayloadPool> payloadpool;
+    std::shared_ptr<PayloadPool> payload_pool;
 };
 
 

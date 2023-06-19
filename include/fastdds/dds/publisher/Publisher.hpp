@@ -183,7 +183,7 @@ public:
      *
      * @param topic Topic the DataWriter will be listening
      * @param qos QoS of the DataWriter.
-     * @param payloadpool Shared pointer to the payload pool (default: nullptr).
+     * @param payload_pool Shared pointer to the payload pool.
      * @param listener Pointer to the listener (default: nullptr).
      * @param mask StatusMask that holds statuses the listener responds to (default: all).
      * @return Pointer to the created DataWriter. nullptr if failed.
@@ -191,7 +191,7 @@ public:
     RTPS_DllAPI DataWriter* create_datawriter(
             Topic* topic,
             const DataWriterQos& qos,
-            std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             DataWriterListener* listener = nullptr,
             const StatusMask& mask = StatusMask::all());
 

@@ -251,6 +251,9 @@ public:
 
     const DataReaderListener* get_listener() const;
 
+    ReturnCode_t set_payload_pool(
+        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool);
+
     /* TODO
        bool get_key_value(
             void* data,
@@ -482,8 +485,11 @@ protected:
 
     DataReader* user_datareader_ = nullptr;
 
-    std::shared_ptr<ITopicPayloadPool> payload_pool_;
+    std::shared_ptr<ITopicPayloadPool> topic_payload_pool_;
     std::shared_ptr<detail::SampleLoanManager> sample_pool_;
+    std::shared_ptr<IPayloadPool> payload_pool_;
+
+    bool is_custom_payload_pool_ = false;
 
     detail::SampleInfoPool sample_info_pool_;
     detail::DataReaderLoanManager loan_manager_;

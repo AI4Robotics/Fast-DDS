@@ -109,12 +109,12 @@ bool HelloWorldPublisher::init(
     }
 
     // CREATE CUSTOM TOPIC PAYLOAD POOL
-    payloadpool = std::make_shared<PayloadPool>();
+    payload_pool = std::make_shared<PayloadPool>();
 
     writer_ = publisher_->create_datawriter(
         topic_,
         wqos,
-        payloadpool,
+        payload_pool,
         &listener_,
         StatusMask::all());
 

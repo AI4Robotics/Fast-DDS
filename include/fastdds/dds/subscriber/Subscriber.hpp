@@ -186,6 +186,23 @@ public:
             const StatusMask& mask = StatusMask::all());
 
     /**
+     * This operation creates a DataReader. The returned DataReader will be attached and belong to the Subscriber.
+     *
+     * @param topic Topic the DataReader will be listening.
+     * @param reader_qos QoS of the DataReader.
+     * @param payload_pool Shared pointer to the payload pool.
+     * @param listener Pointer to the listener (default: nullptr)
+     * @param mask StatusMask that holds statuses the listener responds to (default: all).
+     * @return Pointer to the created DataReader. nullptr if failed.
+     */
+    RTPS_DllAPI DataReader* create_datareader(
+            TopicDescription* topic,
+            const DataReaderQos& reader_qos,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
+            DataReaderListener* listener = nullptr,
+            const StatusMask& mask = StatusMask::all());
+
+    /**
      * This operation deletes a DataReader that belongs to the Subscriber.
      *
      * The delete_datareader operation must be called on the same Subscriber object used to create the DataReader.

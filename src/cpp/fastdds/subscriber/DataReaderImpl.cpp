@@ -1251,6 +1251,14 @@ ReturnCode_t DataReaderImpl::set_listener(
     return ReturnCode_t::RETCODE_OK;
 }
 
+ReturnCode_t DataReaderImpl::set_payload_pool(
+        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool)
+{
+    is_custom_payload_pool_ = true;
+    payload_pool_ = payload_pool;
+    return ReturnCode_t::RETCODE_OK;
+}
+
 const DataReaderListener* DataReaderImpl::get_listener() const
 {
     std::lock_guard<std::mutex> _(listener_mutex_);
@@ -1719,11 +1727,12 @@ std::shared_ptr<IPayloadPool> DataReaderImpl::get_payload_pool()
 
     if (!payload_pool_)
     {
-        payload_pool_ = TopicPayloadPoolRegistry::get(topic_->get_impl()->get_rtps_topic_name(), config);
+        topic_payload_pool_ = TopicPayloadPoolRegistry::get(topic_->get_impl()->get_rtps_topic_name(), config);
         sample_pool_ = std::make_shared<detail::SampleLoanManager>(config, type_);
+        topic_payload_pool_->reserve_history(config, true);
+        payload_pool_ = topic_payload_pool_;
     }
 
-    payload_pool_->reserve_history(config, true);
     return payload_pool_;
 }
 
@@ -1731,8 +1740,13 @@ void DataReaderImpl::release_payload_pool()
 {
     assert(payload_pool_);
 
-    PoolConfig config = PoolConfig::from_history_attributes(history_.m_att);
-    payload_pool_->release_history(config, true);
+    if (!is_custom_payload_pool_)
+    {
+        PoolConfig config = PoolConfig::from_history_attributes(history_.m_att);
+        topic_payload_pool_->release_history(config, true);
+        topic_payload_pool_.reset();
+    }
+
     payload_pool_.reset();
 }
 
