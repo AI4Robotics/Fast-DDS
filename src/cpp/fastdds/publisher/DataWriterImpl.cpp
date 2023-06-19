@@ -146,6 +146,7 @@ DataWriterImpl::DataWriterImpl(
         TypeSupport type,
         Topic* topic,
         const DataWriterQos& qos,
+        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
         DataWriterListener* listen)
     : publisher_(p)
     , type_(type)
@@ -174,6 +175,12 @@ DataWriterImpl::DataWriterImpl(
     fastrtps::rtps::RTPSParticipantImpl::preprocess_endpoint_attributes<WRITER, 0x03, 0x02>(
         EntityId_t::unknown(), publisher_->get_participant_impl()->id_counter(), endpoint_attributes, guid_.entityId);
     guid_.guidPrefix = publisher_->get_participant_impl()->guid().guidPrefix;
+
+    if (payload_pool != nullptr)
+    {
+        is_custom_payload_pool_ = true;
+        payload_pool_ = payload_pool;
+    }
 }
 
 DataWriterImpl::DataWriterImpl(
@@ -1169,14 +1176,6 @@ ReturnCode_t DataWriterImpl::set_listener(
         DataWriterListener* listener)
 {
     listener_ = listener;
-    return ReturnCode_t::RETCODE_OK;
-}
-
-ReturnCode_t DataWriterImpl::set_payload_pool(
-        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool)
-{
-    is_custom_payload_pool_ = true;
-    payload_pool_ = payload_pool;
     return ReturnCode_t::RETCODE_OK;
 }
 

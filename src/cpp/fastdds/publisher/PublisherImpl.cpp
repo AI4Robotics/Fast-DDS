@@ -206,14 +206,16 @@ DataWriterImpl* PublisherImpl::create_datawriter_impl(
         const TypeSupport& type,
         Topic* topic,
         const DataWriterQos& qos,
+        std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payload_pool,
         DataWriterListener* listener)
 {
-    return new DataWriterImpl(this, type, topic, qos, listener);
+    return new DataWriterImpl(this, type, topic, qos, nullptr, listener);
 }
 
 DataWriter* PublisherImpl::create_datawriter(
         Topic* topic,
         const DataWriterQos& qos,
+        std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payload_pool,
         DataWriterListener* listener,
         const StatusMask& mask)
 {
@@ -234,7 +236,7 @@ DataWriter* PublisherImpl::create_datawriter(
         return nullptr;
     }
 
-    DataWriterImpl* impl = create_datawriter_impl(type_support, topic, qos, listener);
+    DataWriterImpl* impl = create_datawriter_impl(type_support, topic, qos, payload_pool, listener);
     return create_datawriter(topic, impl, mask);
 }
 
@@ -277,40 +279,10 @@ DataWriter* PublisherImpl::create_datawriter_with_profile(
     {
         DataWriterQos qos = default_datawriter_qos_;
         utils::set_qos_from_attributes(qos, attr);
-        return create_datawriter(topic, qos, listener, mask);
+        return create_datawriter(topic, qos, nullptr, listener, mask);
     }
 
     return nullptr;
-}
-
-DataWriter* PublisherImpl::create_datawriter(
-        Topic* topic,
-        const DataWriterQos& qos,
-        std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payload_pool,
-        DataWriterListener* listener,
-        const StatusMask& mask)
-{
-    EPROSIMA_LOG_INFO(PUBLISHER, "CREATING WRITER IN TOPIC: " << topic->get_name());
-    //Look for the correct type registration
-    TypeSupport type_support = participant_->find_type(topic->get_type_name());
-
-    /// Preconditions
-    // Check the type was registered.
-    if (type_support.empty())
-    {
-        EPROSIMA_LOG_ERROR(PUBLISHER, "Type: " << topic->get_type_name() << " Not Registered");
-        return nullptr;
-    }
-
-    if (!DataWriterImpl::check_qos_including_resource_limits(qos, type_support))
-    {
-        return nullptr;
-    }
-
-    DataWriterImpl* impl = create_datawriter_impl(type_support, topic, qos, listener);
-    impl->set_payload_pool(payload_pool);
-    DataWriter* writer = create_datawriter(topic, impl, mask);
-    return writer;
 }
 
 ReturnCode_t PublisherImpl::delete_datawriter(

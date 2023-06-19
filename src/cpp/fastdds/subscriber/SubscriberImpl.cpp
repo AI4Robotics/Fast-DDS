@@ -175,14 +175,16 @@ DataReaderImpl* SubscriberImpl::create_datareader_impl(
         const TypeSupport& type,
         TopicDescription* topic,
         const DataReaderQos& qos,
+        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
         DataReaderListener* listener)
 {
-    return new DataReaderImpl(this, type, topic, qos, listener);
+    return new DataReaderImpl(this, type, topic, qos, payload_pool, listener);
 }
 
 DataReader* SubscriberImpl::create_datareader(
         TopicDescription* topic,
         const DataReaderQos& qos,
+        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
         DataReaderListener* listener,
         const StatusMask& mask)
 {
@@ -205,7 +207,7 @@ DataReader* SubscriberImpl::create_datareader(
 
     topic->get_impl()->reference();
 
-    DataReaderImpl* impl = create_datareader_impl(type_support, topic, qos, listener);
+    DataReaderImpl* impl = create_datareader_impl(type_support, topic, qos, payload_pool, listener);
     DataReader* reader = new DataReader(impl, mask);
     impl->user_datareader_ = reader;
 
@@ -238,58 +240,10 @@ DataReader* SubscriberImpl::create_datareader_with_profile(
     {
         DataReaderQos qos = default_datareader_qos_;
         utils::set_qos_from_attributes(qos, attr);
-        return create_datareader(topic, qos, listener, mask);
+        return create_datareader(topic, qos, nullptr, listener, mask);
     }
 
     return nullptr;
-}
-
-DataReader* SubscriberImpl::create_datareader(
-        TopicDescription* topic,
-        const DataReaderQos& qos,
-        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
-        DataReaderListener* listener,
-        const StatusMask& mask)
-{
-    EPROSIMA_LOG_INFO(SUBSCRIBER, "CREATING SUBSCRIBER IN TOPIC: " << topic->get_name());
-    //Look for the correct type registration
-    TypeSupport type_support = participant_->find_type(topic->get_type_name());
-
-    /// Preconditions
-    // Check the type was registered.
-    if (type_support.empty())
-    {
-        EPROSIMA_LOG_ERROR(SUBSCRIBER, "Type : " << topic->get_type_name() << " Not Registered");
-        return nullptr;
-    }
-
-    if (!DataReaderImpl::check_qos_including_resource_limits(qos, type_support))
-    {
-        return nullptr;
-    }
-
-    topic->get_impl()->reference();
-
-    DataReaderImpl* impl = create_datareader_impl(type_support, topic, qos, listener);
-    DataReader* reader = new DataReader(impl, mask);
-    impl->set_payload_pool(payload_pool);
-    impl->user_datareader_ = reader;
-
-    {
-        std::lock_guard<std::mutex> lock(mtx_readers_);
-        readers_[topic->get_name()].push_back(impl);
-    }
-
-    if (user_subscriber_->is_enabled() && qos_.entity_factory().autoenable_created_entities)
-    {
-        if (ReturnCode_t::RETCODE_OK != reader->enable())
-        {
-            delete_datareader(reader);
-            return nullptr;
-        }
-    }
-
-    return reader;
 }
 
 ReturnCode_t SubscriberImpl::delete_datareader(

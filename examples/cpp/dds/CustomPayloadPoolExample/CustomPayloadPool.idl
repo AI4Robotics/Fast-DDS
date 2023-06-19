@@ -1,4 +1,4 @@
-struct HelloWorld
+struct CustomPayloadPool
 {
 	unsigned long index;
 	string message;

@@ -102,6 +102,7 @@ protected:
             const TypeSupport& type,
             TopicDescription* topic,
             const DataReaderQos& qos,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             DataReaderListener* listener = nullptr);
 
 public:
@@ -250,9 +251,6 @@ public:
             DataReaderListener* listener);
 
     const DataReaderListener* get_listener() const;
-
-    ReturnCode_t set_payload_pool(
-        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool);
 
     /* TODO
        bool get_key_value(

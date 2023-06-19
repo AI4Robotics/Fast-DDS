@@ -55,16 +55,17 @@ public:
             const efd::DataWriterQos& qos,
             const eprosima::fastrtps::rtps::EntityId_t& entity_id)
     {
-        return new DataWriterImpl(this, type, topic, qos, entity_id);
+        return new DataWriterImpl(this, type, topic, qos, nullptr, entity_id);
     }
 
     efd::DataWriterImpl* create_datawriter_impl(
             const efd::TypeSupport& type,
             efd::Topic* topic,
             const efd::DataWriterQos& qos,
+            std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payload_pool,
             efd::DataWriterListener* listener) override
     {
-        return new DataWriterImpl(this, type, topic, qos, listener, statistics_listener_);
+        return new DataWriterImpl(this, type, topic, qos, payload_pool, listener, statistics_listener_);
     }
 
 private:

@@ -64,7 +64,7 @@ public:
         cache_change.serializedPayload.max_size = data.length;
 
         // Tell the CacheChange who needs to release its payload
-        cache_change.payload_owner(this);
+        cache_change.payload_owner(data_owner);
 
         return true;
     }

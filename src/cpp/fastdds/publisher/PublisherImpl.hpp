@@ -104,19 +104,13 @@ public:
     DataWriter* create_datawriter(
             Topic* topic,
             const DataWriterQos& qos,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             DataWriterListener* listener,
             const StatusMask& mask = StatusMask::all());
 
     DataWriter* create_datawriter_with_profile(
             Topic* topic,
             const std::string& profile_name,
-            DataWriterListener* listener,
-            const StatusMask& mask = StatusMask::all());
-
-    DataWriter* create_datawriter(
-            Topic* topic,
-            const DataWriterQos& qos,
-            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             DataWriterListener* listener,
             const StatusMask& mask = StatusMask::all());
 
@@ -262,6 +256,7 @@ protected:
             const TypeSupport& type,
             Topic* topic,
             const DataWriterQos& qos,
+            std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payload_pool,
             DataWriterListener* listener);
 
     static void set_qos(

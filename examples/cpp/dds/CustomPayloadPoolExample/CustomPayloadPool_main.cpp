@@ -1,4 +1,4 @@
-// Copyright 2019 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * @file HelloWorld_main.cpp
+ * @file CustomPayloadPool_main.cpp
  *
  */
 
 #include <limits>
 #include <sstream>
 
-#include "HelloWorldPublisher.h"
-#include "HelloWorldSubscriber.h"
+#include "CustomPayloadPoolPublisher.h"
+#include "CustomPayloadPoolSubscriber.h"
 
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
 #include <fastrtps/log/Log.h>
@@ -71,56 +71,6 @@ struct Arg : public option::Arg
         return option::ARG_ILLEGAL;
     }
 
-    static option::ArgStatus Numeric(
-            const option::Option& option,
-            bool msg)
-    {
-        char* endptr = 0;
-        if ( option.arg != nullptr )
-        {
-            strtol(option.arg, &endptr, 10);
-            if (endptr != option.arg && *endptr == 0)
-            {
-                return option::ARG_OK;
-            }
-        }
-
-        if (msg)
-        {
-            print_error("Option '", option, "' requires a numeric argument\n");
-        }
-        return option::ARG_ILLEGAL;
-    }
-
-    template<long min = 0, long max = std::numeric_limits<long>::max()>
-    static option::ArgStatus NumericRange(
-            const option::Option& option,
-            bool msg)
-    {
-        static_assert(min <= max, "NumericRange: invalid range provided.");
-
-        char* endptr = 0;
-        if ( option.arg != nullptr )
-        {
-            long value = strtol(option.arg, &endptr, 10);
-            if ( endptr != option.arg && *endptr == 0 &&
-                    value >= min && value <= max)
-            {
-                return option::ARG_OK;
-            }
-        }
-
-        if (msg)
-        {
-            std::ostringstream os;
-            os << "' requires a numeric argument in range ["
-               << min << ", " << max << "]" << std::endl;
-            print_error("Option '", option, os.str().c_str());
-        }
-
-        return option::ARG_ILLEGAL;
-    }
-
     static option::ArgStatus String(
             const option::Option& option,
             bool msg)
@@ -141,23 +91,14 @@ struct Arg : public option::Arg
 enum  optionIndex
 {
     UNKNOWN_OPT,
-    HELP,
-    SAMPLES,
-    INTERVAL,
-    ENVIRONMENT
+    HELP
 };
 
 const option::Descriptor usage[] = {
     { UNKNOWN_OPT, 0, "", "",                Arg::None,
-      "Usage: HelloWorldExample <publisher|subscriber>\n\nGeneral options:" },
+      "Usage: CustomPayloadPoolExample <publisher|subscriber>\n\nGeneral options:" },
     { HELP,    0, "h", "help",               Arg::None,      "  -h \t--help  \tProduce help message." },
-    { UNKNOWN_OPT, 0, "", "",                Arg::None,      "\nPublisher options:"},
-    { SAMPLES, 0, "s", "samples",            Arg::NumericRange<>,
-      "  -s <num>, \t--samples=<num>  \tNumber of samples (0, default, infinite)." },
-    { INTERVAL, 0, "i", "interval",          Arg::NumericRange<>,
-      "  -i <num>, \t--interval=<num>  \tTime between samples in milliseconds (Default: 100)." },
-    { ENVIRONMENT, 0, "e", "env",            Arg::None,       "  -e \t--env   \tLoad QoS from environment." },
-    { 0, 0, 0, 0, 0, 0 }
+    { 0, 0 }
 };
 
 int main(
@@ -187,7 +128,6 @@ int main(
     int type = 1;
     uint32_t count = 10;
     uint32_t sleep = 100;
-    bool use_environment_qos = false;
 
     argc -= (argc > 0);
     argv += (argc > 0); // skip program name argv[0] if present
@@ -209,7 +149,7 @@ int main(
         }
 
         // For backward compatibility count and sleep may be given positionally
-        if (parse.nonOptionsCount() > 3 || parse.nonOptionsCount() == 0)
+        if (parse.nonOptionsCount() > 2 || parse.nonOptionsCount() == 0)
         {
             throw 2;
         }
@@ -269,34 +209,13 @@ int main(
             sleep = atoi(parse.nonOption(2));
         }
     }
-    else
-    {
-        // new syntax
-        option::Option* opt = options[SAMPLES];
-        if (opt)
-        {
-            count = strtol(opt->arg, nullptr, 10);
-        }
-
-        opt = options[INTERVAL];
-        if (opt)
-        {
-            sleep = strtol(opt->arg, nullptr, 10);
-        }
-
-        opt = options[ENVIRONMENT];
-        if (opt)
-        {
-            use_environment_qos = true;
-        }
-    }
 
     switch (type)
     {
         case 1:
         {
-            HelloWorldPublisher mypub;
-            if (mypub.init(use_environment_qos))
+            CustomPayloadPoolPublisher mypub;
+            if (mypub.init())
             {
                 mypub.run(count, sleep);
             }
@@ -304,8 +223,8 @@ int main(
         }
         case 2:
         {
-            HelloWorldSubscriber mysub;
-            if (mysub.init(use_environment_qos))
+            CustomPayloadPoolSubscriber mysub;
+            if (mysub.init())
             {
                 mysub.run();
             }

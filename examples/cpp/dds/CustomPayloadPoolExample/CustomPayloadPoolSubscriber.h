@@ -1,4 +1,4 @@
-// Copyright 2019 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,31 +13,30 @@
 // limitations under the License.
 
 /**
- * @file HelloWorldSubscriber.h
+ * @file CustomPayloadPoolSubscriber.h
  *
  */
 
-#ifndef HELLOWORLDSUBSCRIBER_H_
-#define HELLOWORLDSUBSCRIBER_H_
+#ifndef CUSTOM_PAYLOAD_POOL_SUBSCRIBER_H_
+#define CUSTOM_PAYLOAD_POOL_SUBSCRIBER_H_
 
-#include "HelloWorldPubSubTypes.h"
+#include "CustomPayloadPoolPubSubTypes.h"
 
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>
 #include <fastrtps/subscriber/SampleInfo.h>
 #include <fastdds/dds/core/status/SubscriptionMatchedStatus.hpp>
 
-class HelloWorldSubscriber
+class CustomPayloadPoolSubscriber : public eprosima::fastdds::dds::DataReaderListener
 {
 public:
 
-    HelloWorldSubscriber();
+    CustomPayloadPoolSubscriber();
 
-    virtual ~HelloWorldSubscriber();
+    virtual ~CustomPayloadPoolSubscriber();
 
     //!Initialize the subscriber
-    bool init(
-            bool use_env);
+    bool init();
 
     //!RUN the subscriber
     void run();
@@ -58,34 +57,18 @@ private:
 
     eprosima::fastdds::dds::TypeSupport type_;
 
-    class SubListener : public eprosima::fastdds::dds::DataReaderListener
-    {
-    public:
+    void on_data_available(
+            eprosima::fastdds::dds::DataReader* reader) override;
 
-        SubListener()
-            : matched_(0)
-            , samples_(0)
-        {
-        }
+    void on_subscription_matched(
+            eprosima::fastdds::dds::DataReader* reader,
+            const eprosima::fastdds::dds::SubscriptionMatchedStatus& info) override;
 
-        ~SubListener() override
-        {
-        }
+    CustomPayloadPool hello_;
 
-        void on_data_available(
-                eprosima::fastdds::dds::DataReader* reader) override;
+    int matched_;
 
-        void on_subscription_matched(
-                eprosima::fastdds::dds::DataReader* reader,
-                const eprosima::fastdds::dds::SubscriptionMatchedStatus& info) override;
-
-        HelloWorld hello_;
-
-        int matched_;
-
-        uint32_t samples_;
-    }
-    listener_;
+    uint32_t samples_;
 };
 
-#endif /* HELLOWORLDSUBSCRIBER_H_ */
+#endif /* CUSTOM_PAYLOAD_POOL_SUBSCRIBER_H_ */

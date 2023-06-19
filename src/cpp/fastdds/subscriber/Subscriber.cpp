@@ -108,7 +108,7 @@ DataReader* Subscriber::create_datareader(
         DataReaderListener* listener,
         const StatusMask& mask)
 {
-    return impl_->create_datareader(topic, reader_qos, listener, mask);
+    return impl_->create_datareader(topic, reader_qos, nullptr, listener, mask);
 }
 
 DataReader* Subscriber::create_datareader_with_profile(
@@ -129,7 +129,6 @@ DataReader* Subscriber::create_datareader(
 {
     return impl_->create_datareader(topic, reader_qos, payload_pool, listener, mask);
 }
-
 
 ReturnCode_t Subscriber::delete_datareader(
         const DataReader* reader)

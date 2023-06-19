@@ -108,6 +108,7 @@ protected:
             TypeSupport type,
             Topic* topic,
             const DataWriterQos& qos,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             DataWriterListener* listener = nullptr);
 
     DataWriterImpl(
@@ -332,9 +333,6 @@ public:
 
     ReturnCode_t set_listener(
             DataWriterListener* listener);
-
-    ReturnCode_t set_payload_pool(
-            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool);
 
     /**
      * This operation can be used to retrieve the instance key that corresponds to an

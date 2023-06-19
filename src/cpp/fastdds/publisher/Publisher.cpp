@@ -114,7 +114,7 @@ DataWriter* Publisher::create_datawriter(
         DataWriterListener* listener,
         const StatusMask& mask)
 {
-    return impl_->create_datawriter(topic, qos, listener, mask);
+    return impl_->create_datawriter(topic, qos, nullptr, listener, mask);
 }
 
 DataWriter* Publisher::create_datawriter_with_profile(

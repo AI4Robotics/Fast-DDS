@@ -14,7 +14,7 @@
 
 cmake_minimum_required(VERSION 3.16.3)
 
-project(HelloWorldExampleTPP VERSION 1 LANGUAGES CXX)
+project(CustomPayloadPoolExample VERSION 1 LANGUAGES CXX)
 
 # Find requirements
 if(NOT fastcdr_FOUND)
@@ -34,15 +34,15 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     endif()
 endif()
 
-message(STATUS "Configuring TopicPayloadPool HelloWorld example...")
-file(GLOB TPP_HELLOWORLD_EXAMPLE_SOURCES_CXX "*.cxx")
-file(GLOB TPP_HELLOWORLD_EXAMPLE_SOURCES_CPP "*.cpp")
+message(STATUS "Configuring custom payload pool example...")
+file(GLOB CUSTOM_PAYLOAD_POOL_EXAMPLE_SOURCES_CXX "*.cxx")
+file(GLOB CUSTOM_PAYLOAD_POOL_EXAMPLE_SOURCES_CPP "*.cpp")
 
-add_executable(HelloWorldExampleTPP ${TPP_HELLOWORLD_EXAMPLE_SOURCES_CXX} ${TPP_HELLOWORLD_EXAMPLE_SOURCES_CPP})
-target_compile_definitions(HelloWorldExampleTPP PRIVATE
+add_executable(CustomPayloadPoolExample ${CUSTOM_PAYLOAD_POOL_EXAMPLE_SOURCES_CXX} ${CUSTOM_PAYLOAD_POOL_EXAMPLE_SOURCES_CPP})
+target_compile_definitions(CustomPayloadPoolExample PRIVATE
     $<$<AND:$<NOT:$<BOOL:${WIN32}>>,$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">>:__DEBUG>
     $<$<BOOL:${INTERNAL_DEBUG}>:__INTERNALDEBUG> # Internal debug activated.
 )
-target_link_libraries(HelloWorldExampleTPP fastrtps fastcdr fastdds::optionparser)
-install(TARGETS HelloWorldExampleTPP
-    RUNTIME DESTINATION examples/cpp/dds/TopicPayloadPool/${BIN_INSTALL_DIR})
+target_link_libraries(CustomPayloadPoolExample fastrtps fastcdr fastdds::optionparser)
+install(TARGETS CustomPayloadPoolExample
+    RUNTIME DESTINATION examples/cpp/dds/CustomPayloadPool/${BIN_INSTALL_DIR})

@@ -1,4 +1,4 @@
-// Copyright 2019 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,31 +13,30 @@
 // limitations under the License.
 
 /**
- * @file HelloWorldPublisher.h
+ * @file CustomPayloadPoolPublisher.h
  *
  */
 
-#ifndef HELLOWORLDPUBLISHER_H_
-#define HELLOWORLDPUBLISHER_H_
+#ifndef CUSTOM_PAYLOAD_POOL_PUBLISHER_H_
+#define CUSTOM_PAYLOAD_POOL_PUBLISHER_H_
 
-#include "HelloWorldPubSubTypes.h"
+#include "CustomPayloadPoolPubSubTypes.h"
 #include "PayloadPool.hpp"
 
 #include <fastdds/dds/publisher/DataWriterListener.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 
-class HelloWorldPublisher
+class CustomPayloadPoolPublisher : public eprosima::fastdds::dds::DataWriterListener
 {
 public:
 
-    HelloWorldPublisher();
+    CustomPayloadPoolPublisher();
 
-    virtual ~HelloWorldPublisher();
+    ~CustomPayloadPoolPublisher();
 
     //!Initialize
-    bool init(
-            bool use_env);
+    bool init();
 
     //!Publish a sample
     bool publish(
@@ -50,7 +49,7 @@ public:
 
 private:
 
-    HelloWorld hello_;
+    CustomPayloadPool hello_;
 
     eprosima::fastdds::dds::DomainParticipant* participant_;
 
@@ -62,31 +61,15 @@ private:
 
     bool stop_;
 
-    class PubListener : public eprosima::fastdds::dds::DataWriterListener
-    {
-    public:
+    void on_publication_matched(
+            eprosima::fastdds::dds::DataWriter* writer,
+            const eprosima::fastdds::dds::PublicationMatchedStatus& info) override;
 
-        PubListener()
-            : matched_(0)
-            , firstConnected_(false)
-        {
-        }
+    int matched_;
 
-        ~PubListener() override
-        {
-        }
+    bool firstConnected_;
 
-        void on_publication_matched(
-                eprosima::fastdds::dds::DataWriter* writer,
-                const eprosima::fastdds::dds::PublicationMatchedStatus& info) override;
-
-        int matched_;
-
-        bool firstConnected_;
-    }
-    listener_;
-
-    void runThread(
+    void run_thread(
             uint32_t number,
             uint32_t sleep);
 
@@ -97,4 +80,4 @@ private:
 
 
 
-#endif /* HELLOWORLDPUBLISHER_H_ */
+#endif /* CUSTOM_PAYLOAD_POOL_PUBLISHER_H_ */

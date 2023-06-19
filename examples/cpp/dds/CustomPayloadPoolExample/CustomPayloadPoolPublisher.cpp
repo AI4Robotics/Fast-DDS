@@ -1,4 +1,4 @@
-// Copyright 2016 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * @file HelloWorldPublisher.cpp
+ * @file CustomPayloadPoolPublisher.cpp
  *
  */
 
-#include "HelloWorldPublisher.h"
+#include "CustomPayloadPoolPublisher.h"
 #include <fastrtps/attributes/ParticipantAttributes.h>
 #include <fastrtps/attributes/PublisherAttributes.h>
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
@@ -31,29 +31,24 @@
 
 using namespace eprosima::fastdds::dds;
 
-HelloWorldPublisher::HelloWorldPublisher()
+CustomPayloadPoolPublisher::CustomPayloadPoolPublisher()
     : participant_(nullptr)
     , publisher_(nullptr)
     , topic_(nullptr)
     , writer_(nullptr)
-    , type_(new HelloWorldPubSubType())
+    , type_(new CustomPayloadPoolPubSubType())
 {
+    matched_ = 0;
+    firstConnected_ = false;
 }
 
-bool HelloWorldPublisher::init(
-        bool use_env)
+bool CustomPayloadPoolPublisher::init()
 {
     hello_.index(0);
-    hello_.message("HelloWorld");
+    hello_.message("CustomPayloadPool");
     DomainParticipantQos pqos = PARTICIPANT_QOS_DEFAULT;
     pqos.name("Participant_pub");
     auto factory = DomainParticipantFactory::get_instance();
-
-    if (use_env)
-    {
-        factory->load_profiles();
-        factory->get_default_participant_qos(pqos);
-    }
 
     participant_ = factory->create_participant(0, pqos);
 
@@ -68,11 +63,6 @@ bool HelloWorldPublisher::init(
     //CREATE THE PUBLISHER
     PublisherQos pubqos = PUBLISHER_QOS_DEFAULT;
 
-    if (use_env)
-    {
-        participant_->get_default_publisher_qos(pubqos);
-    }
-
     publisher_ = participant_->create_publisher(
         pubqos,
         nullptr);
@@ -85,14 +75,9 @@ bool HelloWorldPublisher::init(
     //CREATE THE TOPIC
     TopicQos tqos = TOPIC_QOS_DEFAULT;
 
-    if (use_env)
-    {
-        participant_->get_default_topic_qos(tqos);
-    }
-
     topic_ = participant_->create_topic(
-        "HelloWorldTopic",
-        "HelloWorld",
+        "CustomPayloadPoolTopic",
+        "CustomPayloadPool",
         tqos);
 
     if (topic_ == nullptr)
@@ -103,11 +88,6 @@ bool HelloWorldPublisher::init(
     // CREATE THE WRITER
     DataWriterQos wqos = DATAWRITER_QOS_DEFAULT;
 
-    if (use_env)
-    {
-        publisher_->get_default_datawriter_qos(wqos);
-    }
-
     // CREATE CUSTOM TOPIC PAYLOAD POOL
     payload_pool = std::make_shared<PayloadPool>();
 
@@ -115,7 +95,7 @@ bool HelloWorldPublisher::init(
         topic_,
         wqos,
         payload_pool,
-        &listener_,
+        this,
         StatusMask::all());
 
     if (writer_ == nullptr)
@@ -126,7 +106,7 @@ bool HelloWorldPublisher::init(
     return true;
 }
 
-HelloWorldPublisher::~HelloWorldPublisher()
+CustomPayloadPoolPublisher::~CustomPayloadPoolPublisher()
 {
     if (writer_ != nullptr)
     {
@@ -143,7 +123,7 @@ HelloWorldPublisher::~HelloWorldPublisher()
     DomainParticipantFactory::get_instance()->delete_participant(participant_);
 }
 
-void HelloWorldPublisher::PubListener::on_publication_matched(
+void CustomPayloadPoolPublisher::on_publication_matched(
         eprosima::fastdds::dds::DataWriter*,
         const eprosima::fastdds::dds::PublicationMatchedStatus& info)
 {
@@ -165,7 +145,7 @@ void HelloWorldPublisher::PubListener::on_publication_matched(
     }
 }
 
-void HelloWorldPublisher::runThread(
+void CustomPayloadPoolPublisher::run_thread(
         uint32_t samples,
         uint32_t sleep)
 {
@@ -199,12 +179,12 @@ void HelloWorldPublisher::runThread(
     }
 }
 
-void HelloWorldPublisher::run(
+void CustomPayloadPoolPublisher::run(
         uint32_t samples,
         uint32_t sleep)
 {
     stop_ = false;
-    std::thread thread(&HelloWorldPublisher::runThread, this, samples, sleep);
+    std::thread thread(&CustomPayloadPoolPublisher::run_thread, this, samples, sleep);
     if (samples == 0)
     {
         std::cout << "Publisher running. Please press enter to stop the Publisher at any time." << std::endl;
@@ -218,10 +198,10 @@ void HelloWorldPublisher::run(
     thread.join();
 }
 
-bool HelloWorldPublisher::publish(
+bool CustomPayloadPoolPublisher::publish(
         bool waitForListener)
 {
-    if (listener_.firstConnected_ || !waitForListener || listener_.matched_ > 0)
+    if (firstConnected_ || !waitForListener || matched_ > 0)
     {
         hello_.index(hello_.index() + 1);
         writer_->write(&hello_);

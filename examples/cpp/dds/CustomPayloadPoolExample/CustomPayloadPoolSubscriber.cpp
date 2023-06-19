@@ -1,4 +1,4 @@
-// Copyright 2016 Proyectos y Sistemas de Mantenimiento SL (eProsima).
+// Copyright 2023 Proyectos y Sistemas de Mantenimiento SL (eProsima).
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * @file HelloWorldSubscriber.cpp
+ * @file CustomPayloadPoolSubscriber.cpp
  *
  */
 
-#include "HelloWorldSubscriber.h"
+#include "CustomPayloadPoolSubscriber.h"
 #include <fastrtps/attributes/ParticipantAttributes.h>
 #include <fastrtps/attributes/SubscriberAttributes.h>
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
@@ -28,27 +28,22 @@
 
 using namespace eprosima::fastdds::dds;
 
-HelloWorldSubscriber::HelloWorldSubscriber()
+CustomPayloadPoolSubscriber::CustomPayloadPoolSubscriber()
     : participant_(nullptr)
     , subscriber_(nullptr)
     , topic_(nullptr)
     , reader_(nullptr)
-    , type_(new HelloWorldPubSubType())
+    , type_(new CustomPayloadPoolPubSubType())
 {
+    matched_ = 0;
+    samples_ = 0;
 }
 
-bool HelloWorldSubscriber::init(
-        bool use_env)
+bool CustomPayloadPoolSubscriber::init()
 {
     DomainParticipantQos pqos = PARTICIPANT_QOS_DEFAULT;
     pqos.name("Participant_sub");
     auto factory = DomainParticipantFactory::get_instance();
-
-    if (use_env)
-    {
-        factory->load_profiles();
-        factory->get_default_participant_qos(pqos);
-    }
 
     participant_ = factory->create_participant(0, pqos);
 
@@ -63,11 +58,6 @@ bool HelloWorldSubscriber::init(
     //CREATE THE SUBSCRIBER
     SubscriberQos sqos = SUBSCRIBER_QOS_DEFAULT;
 
-    if (use_env)
-    {
-        participant_->get_default_subscriber_qos(sqos);
-    }
-
     subscriber_ = participant_->create_subscriber(sqos, nullptr);
 
     if (subscriber_ == nullptr)
@@ -78,14 +68,9 @@ bool HelloWorldSubscriber::init(
     //CREATE THE TOPIC
     TopicQos tqos = TOPIC_QOS_DEFAULT;
 
-    if (use_env)
-    {
-        participant_->get_default_topic_qos(tqos);
-    }
-
     topic_ = participant_->create_topic(
-        "HelloWorldTopic",
-        "HelloWorld",
+        "CustomPayloadPoolTopic",
+        "CustomPayloadPool",
         tqos);
 
     if (topic_ == nullptr)
@@ -97,12 +82,7 @@ bool HelloWorldSubscriber::init(
     DataReaderQos rqos = DATAREADER_QOS_DEFAULT;
     rqos.reliability().kind = RELIABLE_RELIABILITY_QOS;
 
-    if (use_env)
-    {
-        subscriber_->get_default_datareader_qos(rqos);
-    }
-
-    reader_ = subscriber_->create_datareader(topic_, rqos, &listener_);
+    reader_ = subscriber_->create_datareader(topic_, rqos, this);
 
     if (reader_ == nullptr)
     {
@@ -112,7 +92,7 @@ bool HelloWorldSubscriber::init(
     return true;
 }
 
-HelloWorldSubscriber::~HelloWorldSubscriber()
+CustomPayloadPoolSubscriber::~CustomPayloadPoolSubscriber()
 {
     if (reader_ != nullptr)
     {
@@ -129,7 +109,7 @@ HelloWorldSubscriber::~HelloWorldSubscriber()
     DomainParticipantFactory::get_instance()->delete_participant(participant_);
 }
 
-void HelloWorldSubscriber::SubListener::on_subscription_matched(
+void CustomPayloadPoolSubscriber::on_subscription_matched(
         DataReader*,
         const SubscriptionMatchedStatus& info)
 {
@@ -150,7 +130,7 @@ void HelloWorldSubscriber::SubListener::on_subscription_matched(
     }
 }
 
-void HelloWorldSubscriber::SubListener::on_data_available(
+void CustomPayloadPoolSubscriber::on_data_available(
         DataReader* reader)
 {
     SampleInfo info;
@@ -165,17 +145,17 @@ void HelloWorldSubscriber::SubListener::on_data_available(
     }
 }
 
-void HelloWorldSubscriber::run()
+void CustomPayloadPoolSubscriber::run()
 {
     std::cout << "Subscriber running. Please press enter to stop the Subscriber" << std::endl;
     std::cin.ignore();
 }
 
-void HelloWorldSubscriber::run(
+void CustomPayloadPoolSubscriber::run(
         uint32_t number)
 {
     std::cout << "Subscriber running until " << number << "samples have been received" << std::endl;
-    while (number > listener_.samples_)
+    while (number > samples_)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
