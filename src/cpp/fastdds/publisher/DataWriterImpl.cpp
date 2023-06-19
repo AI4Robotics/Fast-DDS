@@ -1172,11 +1172,11 @@ ReturnCode_t DataWriterImpl::set_listener(
     return ReturnCode_t::RETCODE_OK;
 }
 
-ReturnCode_t DataWriterImpl::set_payloadpool(
-        std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool)
+ReturnCode_t DataWriterImpl::set_payload_pool(
+        std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool)
 {
-    is_custom_payloadpool = true;
-    payload_pool_ = payloadpool;
+    is_custom_payload_pool_ = true;
+    payload_pool_ = payload_pool;
     return ReturnCode_t::RETCODE_OK;
 }
 
@@ -1947,7 +1947,7 @@ bool DataWriterImpl::release_payload_pool()
 
     bool result = true;
 
-    if (is_data_sharing_compatible_ || is_custom_payloadpool)
+    if (is_data_sharing_compatible_ || is_custom_payload_pool_)
     {
         // No-op
     }

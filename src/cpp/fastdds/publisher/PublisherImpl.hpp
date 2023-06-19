@@ -116,7 +116,7 @@ public:
     DataWriter* create_datawriter(
             Topic* topic,
             const DataWriterQos& qos,
-            std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             DataWriterListener* listener,
             const StatusMask& mask = StatusMask::all());
 

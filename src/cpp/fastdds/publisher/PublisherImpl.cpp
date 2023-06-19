@@ -286,7 +286,7 @@ DataWriter* PublisherImpl::create_datawriter_with_profile(
 DataWriter* PublisherImpl::create_datawriter(
         Topic* topic,
         const DataWriterQos& qos,
-        std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payloadpool,
+        std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payload_pool,
         DataWriterListener* listener,
         const StatusMask& mask)
 {
@@ -308,8 +308,8 @@ DataWriter* PublisherImpl::create_datawriter(
     }
 
     DataWriterImpl* impl = create_datawriter_impl(type_support, topic, qos, listener);
+    impl->set_payload_pool(payload_pool);
     DataWriter* writer = create_datawriter(topic, impl, mask);
-    impl->set_payloadpool(payloadpool);
     return writer;
 }
 
