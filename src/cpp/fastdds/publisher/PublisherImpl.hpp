@@ -113,7 +113,7 @@ public:
             DataWriterListener* listener,
             const StatusMask& mask = StatusMask::all());
 
-    DataWriter* create_datawriter_with_payloadpool(
+    DataWriter* create_datawriter(
             Topic* topic,
             const DataWriterQos& qos,
             std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool,

@@ -283,7 +283,7 @@ DataWriter* PublisherImpl::create_datawriter_with_profile(
     return nullptr;
 }
 
-DataWriter* PublisherImpl::create_datawriter_with_payloadpool(
+DataWriter* PublisherImpl::create_datawriter(
         Topic* topic,
         const DataWriterQos& qos,
         std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payloadpool,

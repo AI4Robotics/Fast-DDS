@@ -188,7 +188,7 @@ public:
      * @param mask StatusMask that holds statuses the listener responds to (default: all).
      * @return Pointer to the created DataWriter. nullptr if failed.
      */
-    RTPS_DllAPI DataWriter* create_datawriter_with_payloadpool(
+    RTPS_DllAPI DataWriter* create_datawriter(
             Topic* topic,
             const DataWriterQos& qos,
             std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool,

@@ -126,14 +126,14 @@ DataWriter* Publisher::create_datawriter_with_profile(
     return impl_->create_datawriter_with_profile(topic, profile_name, listener, mask);
 }
 
-DataWriter* Publisher::create_datawriter_with_payloadpool(
+DataWriter* Publisher::create_datawriter(
         Topic* topic,
         const DataWriterQos& qos,
         std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payloadpool,
         DataWriterListener* listener,
         const StatusMask& mask)
 {
-    return impl_->create_datawriter_with_payloadpool(topic, qos, payloadpool, listener, mask);
+    return impl_->create_datawriter(topic, qos, payloadpool, listener, mask);
 }
 
 ReturnCode_t Publisher::delete_datawriter(
