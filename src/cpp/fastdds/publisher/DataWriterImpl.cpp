@@ -1173,10 +1173,10 @@ ReturnCode_t DataWriterImpl::set_listener(
 }
 
 ReturnCode_t DataWriterImpl::set_payloadpool(
-        fastrtps::rtps::IPayloadPool* payloadpool)
+        std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool)
 {
     is_custom_payloadpool = true;
-    payload_pool_.reset(payloadpool);
+    payload_pool_ = payloadpool;
     return ReturnCode_t::RETCODE_OK;
 }
 

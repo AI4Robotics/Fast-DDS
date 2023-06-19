@@ -23,10 +23,6 @@
 #include <stdio.h>
 #include <string.h>
 
-namespace eprosima {
-namespace fastdds {
-namespace dds {
-
 class PayloadPool : public eprosima::fastrtps::rtps::IPayloadPool
 {
 public:
@@ -94,10 +90,5 @@ public:
     }
 
 };
-
-}  // namespace dds
-}  // namespace fastdds
-}  // namespace eprosima
-
 
 #endif  // DDS_PAYLOADPOOL_HPP

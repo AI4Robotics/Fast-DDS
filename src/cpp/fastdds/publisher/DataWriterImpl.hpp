@@ -334,7 +334,7 @@ public:
             DataWriterListener* listener);
 
     ReturnCode_t set_payloadpool(
-            fastrtps::rtps::IPayloadPool* payloadpool);
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool);
 
     /**
      * This operation can be used to retrieve the instance key that corresponds to an

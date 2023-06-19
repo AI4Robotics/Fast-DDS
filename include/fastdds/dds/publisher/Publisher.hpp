@@ -59,7 +59,7 @@ class Topic;
  *
  * @ingroup FASTDDS_MODULE
  */
-class Publisher : public DomainEntity
+class  Publisher : public DomainEntity
 {
 protected:
 
@@ -191,7 +191,7 @@ public:
     RTPS_DllAPI DataWriter* create_datawriter_with_payloadpool(
             Topic* topic,
             const DataWriterQos& qos,
-            fastrtps::rtps::IPayloadPool* payloadpool,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payloadpool,
             DataWriterListener* listener = nullptr,
             const StatusMask& mask = StatusMask::all());
 

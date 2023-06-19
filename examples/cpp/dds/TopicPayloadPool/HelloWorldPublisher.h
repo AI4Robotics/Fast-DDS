@@ -21,10 +21,10 @@
 #define HELLOWORLDPUBLISHER_H_
 
 #include "HelloWorldPubSubTypes.h"
+#include "PayloadPool.hpp"
 
 #include <fastdds/dds/publisher/DataWriterListener.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
-#include <fastdds/dds/common/PayloadPool.hpp>
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 
 class HelloWorldPublisher
@@ -92,7 +92,7 @@ private:
 
     eprosima::fastdds::dds::TypeSupport type_;
 
-    eprosima::fastdds::dds::PayloadPool* payloadpool;
+    std::shared_ptr<PayloadPool> payloadpool;
 };
 
 

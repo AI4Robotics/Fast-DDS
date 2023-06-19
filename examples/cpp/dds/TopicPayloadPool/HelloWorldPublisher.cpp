@@ -109,7 +109,7 @@ bool HelloWorldPublisher::init(
     }
 
     // CREATE CUSTOM TOPIC PAYLOAD POOL
-    payloadpool = new PayloadPool();
+    payloadpool = std::make_shared<PayloadPool>();
 
     writer_ = publisher_->create_datawriter_with_payloadpool(
         topic_,
