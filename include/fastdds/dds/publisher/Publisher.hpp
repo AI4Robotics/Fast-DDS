@@ -59,7 +59,7 @@ class Topic;
  *
  * @ingroup FASTDDS_MODULE
  */
-class  Publisher : public DomainEntity
+class Publisher : public DomainEntity
 {
 protected:
 
