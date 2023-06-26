@@ -47,9 +47,10 @@ public:
             const efd::TypeSupport& type,
             efd::TopicDescription* topic,
             const efd::DataReaderQos& qos,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             efd::DataReaderListener* listener,
             std::shared_ptr<IListener> stat_listener)
-        : BaseType(s, type, topic, qos, listener)
+        : BaseType(s, type, topic, qos, payload_pool, listener)
         , statistics_listener_(stat_listener)
     {
     }

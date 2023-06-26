@@ -53,9 +53,10 @@ public:
             const efd::TypeSupport& type,
             efd::TopicDescription* topic,
             const efd::DataReaderQos& qos,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             efd::DataReaderListener* listener) override
     {
-        return new DataReaderImpl(this, type, topic, qos, listener, statistics_listener_);
+        return new DataReaderImpl(this, type, topic, qos, payload_pool, listener, statistics_listener_);
     }
 
 private:

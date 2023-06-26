@@ -75,9 +75,10 @@ public:
             const efd::TypeSupport& type,
             efd::Topic* topic,
             const efd::DataWriterQos& qos,
+            std::shared_ptr<fastrtps::rtps::IPayloadPool> payload_pool,
             efd::DataWriterListener* listener) override
     {
-        return new DataWriterImpl(this, type, topic, qos, listener, statistics_listener_);
+        return new DataWriterImpl(this, type, topic, qos, payload_pool, listener, statistics_listener_);
     }
 
     efd::DataWriter* create_datawriter(

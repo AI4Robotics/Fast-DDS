@@ -55,7 +55,7 @@ public:
             const efd::DataWriterQos& qos,
             const eprosima::fastrtps::rtps::EntityId_t& entity_id)
     {
-        return new DataWriterImpl(this, type, topic, qos, nullptr, entity_id);
+        return new DataWriterImpl(this, type, topic, qos, entity_id);
     }
 
     efd::DataWriterImpl* create_datawriter_impl(

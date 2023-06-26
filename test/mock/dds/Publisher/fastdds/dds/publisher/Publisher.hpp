@@ -100,7 +100,7 @@ public:
         {
             return nullptr;
         }
-        return impl_->create_datawriter(topic, qos, listener, mask);
+        return impl_->create_datawriter(topic, qos, nullptr, listener, mask);
     }
 
     ReturnCode_t delete_datawriter(
