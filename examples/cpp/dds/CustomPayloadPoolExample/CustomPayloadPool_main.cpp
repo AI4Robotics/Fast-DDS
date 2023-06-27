@@ -98,7 +98,7 @@ const option::Descriptor usage[] = {
     { UNKNOWN_OPT, 0, "", "",                Arg::None,
       "Usage: CustomPayloadPoolExample <publisher|subscriber>\n\nGeneral options:" },
     { HELP,    0, "h", "help",               Arg::None,      "  -h \t--help  \tProduce help message." },
-    { 0, 0 }
+    {0, 0, 0, 0, 0, 0}
 };
 
 int main(

@@ -209,7 +209,7 @@ DataWriterImpl* PublisherImpl::create_datawriter_impl(
         std::shared_ptr<eprosima::fastrtps::rtps::IPayloadPool> payload_pool,
         DataWriterListener* listener)
 {
-    return new DataWriterImpl(this, type, topic, qos, nullptr, listener);
+    return new DataWriterImpl(this, type, topic, qos, payload_pool, listener);
 }
 
 DataWriter* PublisherImpl::create_datawriter(
