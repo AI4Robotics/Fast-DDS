@@ -45,4 +45,4 @@ target_compile_definitions(CustomPayloadPoolExample PRIVATE
 )
 target_link_libraries(CustomPayloadPoolExample fastrtps fastcdr fastdds::optionparser)
 install(TARGETS CustomPayloadPoolExample
-    RUNTIME DESTINATION examples/cpp/dds/CustomPayloadPool/${BIN_INSTALL_DIR})
+    RUNTIME DESTINATION examples/cpp/dds/CustomPayloadPoolExample/${BIN_INSTALL_DIR})

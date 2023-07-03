@@ -35,17 +35,17 @@ CustomPayloadPoolPubSubType::CustomPayloadPoolPubSubType()
     type_size += eprosima::fastcdr::Cdr::alignment(type_size, 4); /* possible submessage alignment */
     m_typeSize = static_cast<uint32_t>(type_size) + 4; /*encapsulation*/
     m_isGetKeyDefined = CustomPayloadPool::isKeyDefined();
-    size_t keyLength = CustomPayloadPool::getKeyMaxCdrSerializedSize() > 16 ?
+    size_t key_length = CustomPayloadPool::getKeyMaxCdrSerializedSize() > 16 ?
             CustomPayloadPool::getKeyMaxCdrSerializedSize() : 16;
-    m_keyBuffer = reinterpret_cast<unsigned char*>(malloc(keyLength));
-    memset(m_keyBuffer, 0, keyLength);
+    m_key_buffer = reinterpret_cast<unsigned char*>(malloc(key_length));
+    memset(m_key_buffer, 0, key_length);
 }
 
 CustomPayloadPoolPubSubType::~CustomPayloadPoolPubSubType()
 {
-    if (m_keyBuffer != nullptr)
+    if (m_key_buffer != nullptr)
     {
-        free(m_keyBuffer);
+        free(m_key_buffer);
     }
 }
 
@@ -142,7 +142,7 @@ bool CustomPayloadPoolPubSubType::getKey(
     CustomPayloadPool* p_type = static_cast<CustomPayloadPool*>(data);
 
     // Object that manages the raw buffer.
-    eprosima::fastcdr::FastBuffer fastbuffer(reinterpret_cast<char*>(m_keyBuffer),
+    eprosima::fastcdr::FastBuffer fastbuffer(reinterpret_cast<char*>(m_key_buffer),
             CustomPayloadPool::getKeyMaxCdrSerializedSize());
 
     // Object that serializes the data.
@@ -151,7 +151,7 @@ bool CustomPayloadPoolPubSubType::getKey(
     if (force_md5 || CustomPayloadPool::getKeyMaxCdrSerializedSize() > 16)
     {
         m_md5.init();
-        m_md5.update(m_keyBuffer, static_cast<unsigned int>(ser.getSerializedDataLength()));
+        m_md5.update(m_key_buffer, static_cast<unsigned int>(ser.getSerializedDataLength()));
         m_md5.finalize();
         for (uint8_t i = 0; i < 16; ++i)
         {
@@ -162,7 +162,7 @@ bool CustomPayloadPoolPubSubType::getKey(
     {
         for (uint8_t i = 0; i < 16; ++i)
         {
-            handle->value[i] = m_keyBuffer[i];
+            handle->value[i] = m_key_buffer[i];
         }
     }
     return true;

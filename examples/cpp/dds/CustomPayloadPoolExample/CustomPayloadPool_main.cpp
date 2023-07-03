@@ -148,12 +148,6 @@ int main(
             throw 1;
         }
 
-        // For backward compatibility count and sleep may be given positionally
-        if (parse.nonOptionsCount() > 2 || parse.nonOptionsCount() == 0)
-        {
-            throw 2;
-        }
-
         // Decide between publisher or subscriber
         const char* type_name = parse.nonOption(0);
 
@@ -210,11 +204,14 @@ int main(
         }
     }
 
+    // CREATE CUSTOM TOPIC PAYLOAD POOL
+    std::shared_ptr<PayloadPool> payload_pool = std::make_shared<PayloadPool>();
+
     switch (type)
     {
         case 1:
         {
-            CustomPayloadPoolPublisher mypub;
+            CustomPayloadPoolPublisher mypub(payload_pool);
             if (mypub.init())
             {
                 mypub.run(count, sleep);
@@ -223,7 +220,7 @@ int main(
         }
         case 2:
         {
-            CustomPayloadPoolSubscriber mysub;
+            CustomPayloadPoolSubscriber mysub(payload_pool);
             if (mysub.init())
             {
                 mysub.run();

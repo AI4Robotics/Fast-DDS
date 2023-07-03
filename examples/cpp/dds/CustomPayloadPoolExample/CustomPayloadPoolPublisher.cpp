@@ -31,15 +31,17 @@
 
 using namespace eprosima::fastdds::dds;
 
-CustomPayloadPoolPublisher::CustomPayloadPoolPublisher()
+CustomPayloadPoolPublisher::CustomPayloadPoolPublisher(
+        std::shared_ptr<PayloadPool> payload_pool)
     : participant_(nullptr)
     , publisher_(nullptr)
     , topic_(nullptr)
     , writer_(nullptr)
     , type_(new CustomPayloadPoolPubSubType())
+    , payload_pool_(payload_pool)
 {
     matched_ = 0;
-    firstConnected_ = false;
+    first_connected_ = false;
 }
 
 bool CustomPayloadPoolPublisher::init()
@@ -88,13 +90,10 @@ bool CustomPayloadPoolPublisher::init()
     // CREATE THE WRITER
     DataWriterQos wqos = DATAWRITER_QOS_DEFAULT;
 
-    // CREATE CUSTOM TOPIC PAYLOAD POOL
-    payload_pool = std::make_shared<PayloadPool>();
-
     writer_ = publisher_->create_datawriter(
         topic_,
         wqos,
-        payload_pool,
+        payload_pool_,
         this,
         StatusMask::all());
 
@@ -130,7 +129,7 @@ void CustomPayloadPoolPublisher::on_publication_matched(
     if (info.current_count_change == 1)
     {
         matched_ = info.total_count;
-        firstConnected_ = true;
+        first_connected_ = true;
         std::cout << "Publisher matched." << std::endl;
     }
     else if (info.current_count_change == -1)
@@ -199,9 +198,9 @@ void CustomPayloadPoolPublisher::run(
 }
 
 bool CustomPayloadPoolPublisher::publish(
-        bool waitForListener)
+        bool wait_for_listener)
 {
-    if (firstConnected_ || !waitForListener || matched_ > 0)
+    if (first_connected_ || !wait_for_listener || matched_ > 0)
     {
         hello_.index(hello_.index() + 1);
         writer_->write(&hello_);

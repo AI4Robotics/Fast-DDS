@@ -95,7 +95,7 @@ public:
 #endif  // TOPIC_DATA_TYPE_API_HAS_CONSTRUCT_SAMPLE
 
     MD5 m_md5;
-    unsigned char* m_keyBuffer;
+    unsigned char* m_key_buffer;
 };
 
 #endif // _FAST_DDS_GENERATED_CUSTOM_PAYLOAD_POOL__PUBSUBTYPES_H_

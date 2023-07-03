@@ -28,12 +28,14 @@
 
 using namespace eprosima::fastdds::dds;
 
-CustomPayloadPoolSubscriber::CustomPayloadPoolSubscriber()
+CustomPayloadPoolSubscriber::CustomPayloadPoolSubscriber(
+        std::shared_ptr<PayloadPool> payload_pool)
     : participant_(nullptr)
     , subscriber_(nullptr)
     , topic_(nullptr)
     , reader_(nullptr)
     , type_(new CustomPayloadPoolPubSubType())
+    , payload_pool_(payload_pool)
 {
     matched_ = 0;
     samples_ = 0;
@@ -82,7 +84,7 @@ bool CustomPayloadPoolSubscriber::init()
     DataReaderQos rqos = DATAREADER_QOS_DEFAULT;
     rqos.reliability().kind = RELIABLE_RELIABILITY_QOS;
 
-    reader_ = subscriber_->create_datareader(topic_, rqos, this);
+    reader_ = subscriber_->create_datareader(topic_, rqos, payload_pool_, this);
 
     if (reader_ == nullptr)
     {

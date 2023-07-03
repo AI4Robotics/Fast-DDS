@@ -1723,14 +1723,18 @@ std::shared_ptr<IPayloadPool> DataReaderImpl::get_payload_pool()
     }
 
     PoolConfig config = PoolConfig::from_history_attributes(history_.m_att);
-    sample_pool_ = std::make_shared<detail::SampleLoanManager>(config, type_);
+
+    if (!sample_pool_)
+    {
+        sample_pool_ = std::make_shared<detail::SampleLoanManager>(config, type_);
+    }
 
     if (!payload_pool_)
     {
-        std::shared_ptr<ITopicPayloadPool> topic_payload_pool_ = TopicPayloadPoolRegistry::get(
+        std::shared_ptr<ITopicPayloadPool> topic_payload_pool = TopicPayloadPoolRegistry::get(
             topic_->get_impl()->get_rtps_topic_name(), config);
-        topic_payload_pool_->reserve_history(config, true);
-        payload_pool_ = topic_payload_pool_;
+        topic_payload_pool->reserve_history(config, true);
+        payload_pool_ = topic_payload_pool;
     }
 
     return payload_pool_;
@@ -1743,9 +1747,9 @@ void DataReaderImpl::release_payload_pool()
     if (!is_custom_payload_pool_)
     {
         PoolConfig config = PoolConfig::from_history_attributes(history_.m_att);
-        std::shared_ptr<fastrtps::rtps::ITopicPayloadPool> topic_payload_pool_;
-        topic_payload_pool_ = std::dynamic_pointer_cast<fastrtps::rtps::ITopicPayloadPool>(payload_pool_);
-        topic_payload_pool_->release_history(config, true);
+        std::shared_ptr<fastrtps::rtps::ITopicPayloadPool> topic_payload_pool =
+                std::dynamic_pointer_cast<fastrtps::rtps::ITopicPayloadPool>(payload_pool_);
+        topic_payload_pool->release_history(config, true);
     }
 
     payload_pool_.reset();

@@ -31,7 +31,8 @@ class CustomPayloadPoolPublisher : public eprosima::fastdds::dds::DataWriterList
 {
 public:
 
-    CustomPayloadPoolPublisher();
+    CustomPayloadPoolPublisher(
+        std::shared_ptr<PayloadPool> payload_pool);
 
     ~CustomPayloadPoolPublisher();
 
@@ -40,7 +41,7 @@ public:
 
     //!Publish a sample
     bool publish(
-            bool waitForListener = true);
+            bool wait_for_listener = true);
 
     //!Run for number samples
     void run(
@@ -67,7 +68,7 @@ private:
 
     int matched_;
 
-    bool firstConnected_;
+    bool first_connected_;
 
     void run_thread(
             uint32_t number,
@@ -75,7 +76,7 @@ private:
 
     eprosima::fastdds::dds::TypeSupport type_;
 
-    std::shared_ptr<PayloadPool> payload_pool;
+    std::shared_ptr<PayloadPool> payload_pool_;
 };
 
 

@@ -483,7 +483,6 @@ protected:
 
     DataReader* user_datareader_ = nullptr;
 
-    std::shared_ptr<ITopicPayloadPool> topic_payload_pool_;
     std::shared_ptr<detail::SampleLoanManager> sample_pool_;
     std::shared_ptr<IPayloadPool> payload_pool_;
 

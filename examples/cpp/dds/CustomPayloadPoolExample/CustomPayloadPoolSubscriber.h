@@ -21,6 +21,7 @@
 #define CUSTOM_PAYLOAD_POOL_SUBSCRIBER_H_
 
 #include "CustomPayloadPoolPubSubTypes.h"
+#include "PayloadPool.hpp"
 
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>
@@ -31,7 +32,8 @@ class CustomPayloadPoolSubscriber : public eprosima::fastdds::dds::DataReaderLis
 {
 public:
 
-    CustomPayloadPoolSubscriber();
+    CustomPayloadPoolSubscriber(
+        std::shared_ptr<PayloadPool> payload_pool);
 
     virtual ~CustomPayloadPoolSubscriber();
 
@@ -56,6 +58,8 @@ private:
     eprosima::fastdds::dds::DataReader* reader_;
 
     eprosima::fastdds::dds::TypeSupport type_;
+
+    std::shared_ptr<PayloadPool> payload_pool_;
 
     void on_data_available(
             eprosima::fastdds::dds::DataReader* reader) override;
