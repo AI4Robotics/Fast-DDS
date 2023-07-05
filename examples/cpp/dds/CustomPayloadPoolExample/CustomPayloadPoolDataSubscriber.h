@@ -13,29 +13,29 @@
 // limitations under the License.
 
 /**
- * @file CustomPayloadPoolSubscriber.h
+ * @file CustomPayloadPoolDataSubscriber.h
  *
  */
 
-#ifndef CUSTOM_PAYLOAD_POOL_SUBSCRIBER_H_
-#define CUSTOM_PAYLOAD_POOL_SUBSCRIBER_H_
+#ifndef CUSTOM_PAYLOAD_POOL_DATA_SUBSCRIBER_H_
+#define CUSTOM_PAYLOAD_POOL_DATA_SUBSCRIBER_H_
 
-#include "CustomPayloadPoolPubSubTypes.h"
-#include "PayloadPool.hpp"
+#include "CustomPayloadPoolDataPubSubTypes.h"
+#include "CustomPayloadPool.hpp"
 
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>
 #include <fastrtps/subscriber/SampleInfo.h>
 #include <fastdds/dds/core/status/SubscriptionMatchedStatus.hpp>
 
-class CustomPayloadPoolSubscriber : public eprosima::fastdds::dds::DataReaderListener
+class CustomPayloadPoolDataSubscriber : public eprosima::fastdds::dds::DataReaderListener
 {
 public:
 
-    CustomPayloadPoolSubscriber(
-        std::shared_ptr<PayloadPool> payload_pool);
+    CustomPayloadPoolDataSubscriber(
+            std::shared_ptr<CustomPayloadPool> payload_pool);
 
-    virtual ~CustomPayloadPoolSubscriber();
+    virtual ~CustomPayloadPoolDataSubscriber();
 
     //!Initialize the subscriber
     bool init();
@@ -59,7 +59,7 @@ private:
 
     eprosima::fastdds::dds::TypeSupport type_;
 
-    std::shared_ptr<PayloadPool> payload_pool_;
+    std::shared_ptr<CustomPayloadPool> payload_pool_;
 
     void on_data_available(
             eprosima::fastdds::dds::DataReader* reader) override;
@@ -68,11 +68,11 @@ private:
             eprosima::fastdds::dds::DataReader* reader,
             const eprosima::fastdds::dds::SubscriptionMatchedStatus& info) override;
 
-    CustomPayloadPool hello_;
+    CustomPayloadPoolData hello_;
 
     int matched_;
 
     uint32_t samples_;
 };
 
-#endif /* CUSTOM_PAYLOAD_POOL_SUBSCRIBER_H_ */
+#endif /* CUSTOM_PAYLOAD_POOL_DATA_SUBSCRIBER_H_ */

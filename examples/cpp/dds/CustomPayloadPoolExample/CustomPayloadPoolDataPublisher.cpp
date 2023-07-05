@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * @file CustomPayloadPoolPublisher.cpp
+ * @file CustomPayloadPoolDataPublisher.cpp
  *
  */
 
-#include "CustomPayloadPoolPublisher.h"
+#include "CustomPayloadPoolDataPublisher.h"
 #include <fastrtps/attributes/ParticipantAttributes.h>
 #include <fastrtps/attributes/PublisherAttributes.h>
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
@@ -31,20 +31,20 @@
 
 using namespace eprosima::fastdds::dds;
 
-CustomPayloadPoolPublisher::CustomPayloadPoolPublisher(
-        std::shared_ptr<PayloadPool> payload_pool)
+CustomPayloadPoolDataPublisher::CustomPayloadPoolDataPublisher(
+        std::shared_ptr<CustomPayloadPool> payload_pool)
     : participant_(nullptr)
     , publisher_(nullptr)
     , topic_(nullptr)
     , writer_(nullptr)
-    , type_(new CustomPayloadPoolPubSubType())
+    , type_(new CustomPayloadPoolDataPubSubType())
     , payload_pool_(payload_pool)
 {
     matched_ = 0;
     first_connected_ = false;
 }
 
-bool CustomPayloadPoolPublisher::init()
+bool CustomPayloadPoolDataPublisher::init()
 {
     hello_.index(0);
     hello_.message("CustomPayloadPool");
@@ -79,7 +79,7 @@ bool CustomPayloadPoolPublisher::init()
 
     topic_ = participant_->create_topic(
         "CustomPayloadPoolTopic",
-        "CustomPayloadPool",
+        "CustomPayloadPoolData",
         tqos);
 
     if (topic_ == nullptr)
@@ -105,7 +105,7 @@ bool CustomPayloadPoolPublisher::init()
     return true;
 }
 
-CustomPayloadPoolPublisher::~CustomPayloadPoolPublisher()
+CustomPayloadPoolDataPublisher::~CustomPayloadPoolDataPublisher()
 {
     if (writer_ != nullptr)
     {
@@ -122,7 +122,7 @@ CustomPayloadPoolPublisher::~CustomPayloadPoolPublisher()
     DomainParticipantFactory::get_instance()->delete_participant(participant_);
 }
 
-void CustomPayloadPoolPublisher::on_publication_matched(
+void CustomPayloadPoolDataPublisher::on_publication_matched(
         eprosima::fastdds::dds::DataWriter*,
         const eprosima::fastdds::dds::PublicationMatchedStatus& info)
 {
@@ -144,7 +144,7 @@ void CustomPayloadPoolPublisher::on_publication_matched(
     }
 }
 
-void CustomPayloadPoolPublisher::run_thread(
+void CustomPayloadPoolDataPublisher::run_thread(
         uint32_t samples,
         uint32_t sleep)
 {
@@ -178,12 +178,12 @@ void CustomPayloadPoolPublisher::run_thread(
     }
 }
 
-void CustomPayloadPoolPublisher::run(
+void CustomPayloadPoolDataPublisher::run(
         uint32_t samples,
         uint32_t sleep)
 {
     stop_ = false;
-    std::thread thread(&CustomPayloadPoolPublisher::run_thread, this, samples, sleep);
+    std::thread thread(&CustomPayloadPoolDataPublisher::run_thread, this, samples, sleep);
     if (samples == 0)
     {
         std::cout << "Publisher running. Please press enter to stop the Publisher at any time." << std::endl;
@@ -197,7 +197,7 @@ void CustomPayloadPoolPublisher::run(
     thread.join();
 }
 
-bool CustomPayloadPoolPublisher::publish(
+bool CustomPayloadPoolDataPublisher::publish(
         bool wait_for_listener)
 {
     if (first_connected_ || !wait_for_listener || matched_ > 0)

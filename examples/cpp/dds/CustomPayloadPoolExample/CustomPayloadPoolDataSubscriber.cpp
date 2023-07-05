@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * @file CustomPayloadPoolSubscriber.cpp
+ * @file CustomPayloadPoolDataSubscriber.cpp
  *
  */
 
-#include "CustomPayloadPoolSubscriber.h"
+#include "CustomPayloadPoolDataSubscriber.h"
 #include <fastrtps/attributes/ParticipantAttributes.h>
 #include <fastrtps/attributes/SubscriberAttributes.h>
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
@@ -28,20 +28,20 @@
 
 using namespace eprosima::fastdds::dds;
 
-CustomPayloadPoolSubscriber::CustomPayloadPoolSubscriber(
-        std::shared_ptr<PayloadPool> payload_pool)
+CustomPayloadPoolDataSubscriber::CustomPayloadPoolDataSubscriber(
+        std::shared_ptr<CustomPayloadPool> payload_pool)
     : participant_(nullptr)
     , subscriber_(nullptr)
     , topic_(nullptr)
     , reader_(nullptr)
-    , type_(new CustomPayloadPoolPubSubType())
+    , type_(new CustomPayloadPoolDataPubSubType())
     , payload_pool_(payload_pool)
 {
     matched_ = 0;
     samples_ = 0;
 }
 
-bool CustomPayloadPoolSubscriber::init()
+bool CustomPayloadPoolDataSubscriber::init()
 {
     DomainParticipantQos pqos = PARTICIPANT_QOS_DEFAULT;
     pqos.name("Participant_sub");
@@ -72,7 +72,7 @@ bool CustomPayloadPoolSubscriber::init()
 
     topic_ = participant_->create_topic(
         "CustomPayloadPoolTopic",
-        "CustomPayloadPool",
+        "CustomPayloadPoolData",
         tqos);
 
     if (topic_ == nullptr)
@@ -94,7 +94,7 @@ bool CustomPayloadPoolSubscriber::init()
     return true;
 }
 
-CustomPayloadPoolSubscriber::~CustomPayloadPoolSubscriber()
+CustomPayloadPoolDataSubscriber::~CustomPayloadPoolDataSubscriber()
 {
     if (reader_ != nullptr)
     {
@@ -111,7 +111,7 @@ CustomPayloadPoolSubscriber::~CustomPayloadPoolSubscriber()
     DomainParticipantFactory::get_instance()->delete_participant(participant_);
 }
 
-void CustomPayloadPoolSubscriber::on_subscription_matched(
+void CustomPayloadPoolDataSubscriber::on_subscription_matched(
         DataReader*,
         const SubscriptionMatchedStatus& info)
 {
@@ -132,7 +132,7 @@ void CustomPayloadPoolSubscriber::on_subscription_matched(
     }
 }
 
-void CustomPayloadPoolSubscriber::on_data_available(
+void CustomPayloadPoolDataSubscriber::on_data_available(
         DataReader* reader)
 {
     SampleInfo info;
@@ -147,13 +147,13 @@ void CustomPayloadPoolSubscriber::on_data_available(
     }
 }
 
-void CustomPayloadPoolSubscriber::run()
+void CustomPayloadPoolDataSubscriber::run()
 {
     std::cout << "Subscriber running. Please press enter to stop the Subscriber" << std::endl;
     std::cin.ignore();
 }
 
-void CustomPayloadPoolSubscriber::run(
+void CustomPayloadPoolDataSubscriber::run(
         uint32_t number)
 {
     std::cout << "Subscriber running until " << number << "samples have been received" << std::endl;

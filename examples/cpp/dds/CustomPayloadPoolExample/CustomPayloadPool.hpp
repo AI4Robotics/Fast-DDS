@@ -13,21 +13,21 @@
 // limitations under the License.
 
 /**
- * @file PayloadPool.hpp
+ * @file CustomPayloadPool.hpp
  */
 
-#ifndef DDS_PAYLOADPOOL_HPP
-#define DDS_PAYLOADPOOL_HPP
+#ifndef DDS_CUSTOM_PAYLOAD_POOL_DATA_HPP
+#define DDS_CUSTOM_PAYLOAD_POOL_DATA_HPP
 
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
-class PayloadPool : public eprosima::fastrtps::rtps::IPayloadPool
+class CustomPayloadPool : public eprosima::fastrtps::rtps::IPayloadPool
 {
 public:
 
-    ~PayloadPool() = default;
+    ~CustomPayloadPool() = default;
 
     bool get_payload(
             unsigned int size,
@@ -91,4 +91,4 @@ public:
 
 };
 
-#endif  // DDS_PAYLOADPOOL_HPP
+#endif  // DDS_CUSTOM_PAYLOAD_POOL_DATA_HPP

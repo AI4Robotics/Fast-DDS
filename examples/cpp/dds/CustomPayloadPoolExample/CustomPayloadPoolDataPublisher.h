@@ -13,28 +13,28 @@
 // limitations under the License.
 
 /**
- * @file CustomPayloadPoolPublisher.h
+ * @file CustomPayloadPoolDataPublisher.h
  *
  */
 
-#ifndef CUSTOM_PAYLOAD_POOL_PUBLISHER_H_
-#define CUSTOM_PAYLOAD_POOL_PUBLISHER_H_
+#ifndef CUSTOM_PAYLOAD_POOL_DATA_PUBLISHER_H_
+#define CUSTOM_PAYLOAD_POOL_DATA_PUBLISHER_H_
 
-#include "CustomPayloadPoolPubSubTypes.h"
-#include "PayloadPool.hpp"
+#include "CustomPayloadPoolDataPubSubTypes.h"
+#include "CustomPayloadPool.hpp"
 
 #include <fastdds/dds/publisher/DataWriterListener.hpp>
 #include <fastdds/dds/topic/TypeSupport.hpp>
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 
-class CustomPayloadPoolPublisher : public eprosima::fastdds::dds::DataWriterListener
+class CustomPayloadPoolDataPublisher : public eprosima::fastdds::dds::DataWriterListener
 {
 public:
 
-    CustomPayloadPoolPublisher(
-        std::shared_ptr<PayloadPool> payload_pool);
+    CustomPayloadPoolDataPublisher(
+            std::shared_ptr<CustomPayloadPool> payload_pool);
 
-    ~CustomPayloadPoolPublisher();
+    ~CustomPayloadPoolDataPublisher();
 
     //!Initialize
     bool init();
@@ -50,7 +50,7 @@ public:
 
 private:
 
-    CustomPayloadPool hello_;
+    CustomPayloadPoolData hello_;
 
     eprosima::fastdds::dds::DomainParticipant* participant_;
 
@@ -76,9 +76,9 @@ private:
 
     eprosima::fastdds::dds::TypeSupport type_;
 
-    std::shared_ptr<PayloadPool> payload_pool_;
+    std::shared_ptr<CustomPayloadPool> payload_pool_;
 };
 
 
 
-#endif /* CUSTOM_PAYLOAD_POOL_PUBLISHER_H_ */
+#endif /* CUSTOM_PAYLOAD_POOL_DATA_PUBLISHER_H_ */

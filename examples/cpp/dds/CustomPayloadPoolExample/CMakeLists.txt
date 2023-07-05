@@ -35,10 +35,10 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 endif()
 
 message(STATUS "Configuring custom payload pool example...")
-file(GLOB CUSTOM_PAYLOAD_POOL_EXAMPLE_SOURCES_CXX "*.cxx")
-file(GLOB CUSTOM_PAYLOAD_POOL_EXAMPLE_SOURCES_CPP "*.cpp")
+file(GLOB CUSTOM_PAYLOAD_POOL_DATA_EXAMPLE_SOURCES_CXX "*.cxx")
+file(GLOB CUSTOM_PAYLOAD_POOL_DATA_EXAMPLE_SOURCES_CPP "*.cpp")
 
-add_executable(CustomPayloadPoolExample ${CUSTOM_PAYLOAD_POOL_EXAMPLE_SOURCES_CXX} ${CUSTOM_PAYLOAD_POOL_EXAMPLE_SOURCES_CPP})
+add_executable(CustomPayloadPoolExample ${CUSTOM_PAYLOAD_POOL_DATA_EXAMPLE_SOURCES_CXX} ${CUSTOM_PAYLOAD_POOL_DATA_EXAMPLE_SOURCES_CPP})
 target_compile_definitions(CustomPayloadPoolExample PRIVATE
     $<$<AND:$<NOT:$<BOOL:${WIN32}>>,$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">>:__DEBUG>
     $<$<BOOL:${INTERNAL_DEBUG}>:__INTERNALDEBUG> # Internal debug activated.

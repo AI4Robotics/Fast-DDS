@@ -20,8 +20,8 @@
 #include <limits>
 #include <sstream>
 
-#include "CustomPayloadPoolPublisher.h"
-#include "CustomPayloadPoolSubscriber.h"
+#include "CustomPayloadPoolDataPublisher.h"
+#include "CustomPayloadPoolDataSubscriber.h"
 
 #include <fastdds/dds/domain/DomainParticipantFactory.hpp>
 #include <fastrtps/log/Log.h>
@@ -148,6 +148,11 @@ int main(
             throw 1;
         }
 
+        if (parse.nonOptionsCount() != 1)
+        {
+            throw 2;
+        }
+
         // Decide between publisher or subscriber
         const char* type_name = parse.nonOption(0);
 
@@ -178,8 +183,7 @@ int main(
     {
         if ( error == 2 )
         {
-            std::cerr << "ERROR: first argument must be <publisher|subscriber> followed by - or -- options"
-                      << std::endl;
+            std::cerr << "ERROR: first argument must be <publisher|subscriber>" << std::endl;
         }
         option::printUsage(fwrite, stdout, usage, columns);
         return error;
@@ -205,13 +209,13 @@ int main(
     }
 
     // CREATE CUSTOM TOPIC PAYLOAD POOL
-    std::shared_ptr<PayloadPool> payload_pool = std::make_shared<PayloadPool>();
+    std::shared_ptr<CustomPayloadPool> payload_pool = std::make_shared<CustomPayloadPool>();
 
     switch (type)
     {
         case 1:
         {
-            CustomPayloadPoolPublisher mypub(payload_pool);
+            CustomPayloadPoolDataPublisher mypub(payload_pool);
             if (mypub.init())
             {
                 mypub.run(count, sleep);
@@ -220,7 +224,7 @@ int main(
         }
         case 2:
         {
-            CustomPayloadPoolSubscriber mysub(payload_pool);
+            CustomPayloadPoolDataSubscriber mysub(payload_pool);
             if (mysub.init())
             {
                 mysub.run();
