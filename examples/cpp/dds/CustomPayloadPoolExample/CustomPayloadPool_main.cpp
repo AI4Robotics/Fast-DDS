@@ -71,6 +71,56 @@ struct Arg : public option::Arg
         return option::ARG_ILLEGAL;
     }
 
+    static option::ArgStatus Numeric(
+            const option::Option& option,
+            bool msg)
+    {
+        char* endptr = 0;
+        if ( option.arg != nullptr )
+        {
+            strtol(option.arg, &endptr, 10);
+            if (endptr != option.arg && *endptr == 0)
+            {
+                return option::ARG_OK;
+            }
+        }
+
+        if (msg)
+        {
+            print_error("Option '", option, "' requires a numeric argument\n");
+        }
+        return option::ARG_ILLEGAL;
+    }
+
+    template<long min = 0, long max = std::numeric_limits<long>::max()>
+    static option::ArgStatus NumericRange(
+            const option::Option& option,
+            bool msg)
+    {
+        static_assert(min <= max, "NumericRange: invalid range provided.");
+
+        char* endptr = 0;
+        if ( option.arg != nullptr )
+        {
+            long value = strtol(option.arg, &endptr, 10);
+            if ( endptr != option.arg && *endptr == 0 &&
+                    value >= min && value <= max)
+            {
+                return option::ARG_OK;
+            }
+        }
+
+        if (msg)
+        {
+            std::ostringstream os;
+            os << "' requires a numeric argument in range ["
+               << min << ", " << max << "]" << std::endl;
+            print_error("Option '", option, os.str().c_str());
+        }
+
+        return option::ARG_ILLEGAL;
+    }
+
     static option::ArgStatus String(
             const option::Option& option,
             bool msg)
@@ -91,14 +141,21 @@ struct Arg : public option::Arg
 enum  optionIndex
 {
     UNKNOWN_OPT,
-    HELP
+    HELP,
+    SAMPLES,
+    INTERVAL
 };
 
 const option::Descriptor usage[] = {
     { UNKNOWN_OPT, 0, "", "",                Arg::None,
       "Usage: CustomPayloadPoolExample <publisher|subscriber>\n\nGeneral options:" },
     { HELP,    0, "h", "help",               Arg::None,      "  -h \t--help  \tProduce help message." },
-    {0, 0, 0, 0, 0, 0}
+    { UNKNOWN_OPT, 0, "", "",                Arg::None,      "\nPublisher options:"},
+    { SAMPLES, 0, "s", "samples",            Arg::NumericRange<>,
+      "  -s <num>, \t--samples=<num>  \tNumber of samples (0, default, infinite)." },
+    { INTERVAL, 0, "i", "interval",          Arg::NumericRange<>,
+      "  -i <num>, \t--interval=<num>  \tTime between samples in milliseconds (Default: 100)." },
+    { 0, 0, 0, 0, 0, 0 }
 };
 
 int main(
@@ -148,7 +205,7 @@ int main(
             throw 1;
         }
 
-        if (parse.nonOptionsCount() != 1)
+        if (parse.nonOptionsCount() < 1)
         {
             throw 2;
         }
@@ -205,6 +262,21 @@ int main(
         if (parse.nonOptionsCount() == 3)
         {
             sleep = atoi(parse.nonOption(2));
+        }
+    }
+    else
+    {
+        // new syntax
+        option::Option* opt = options[SAMPLES];
+        if (opt)
+        {
+            count = strtol(opt->arg, nullptr, 10);
+        }
+
+        opt = options[INTERVAL];
+        if (opt)
+        {
+            sleep = strtol(opt->arg, nullptr, 10);
         }
     }
 
