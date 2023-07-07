@@ -251,17 +251,10 @@ int main(
     {
         // old syntax, only affects publishers
         // old and new syntax cannot be mixed
-        if (type != 1 || parse.optionsCount() > 0)
+        if (type != 1 || parse.optionsCount() >= 0)
         {
             option::printUsage(fwrite, stdout, usage, columns);
             return 1;
-        }
-
-        count = atoi(parse.nonOption(1));
-
-        if (parse.nonOptionsCount() == 3)
-        {
-            sleep = atoi(parse.nonOption(2));
         }
     }
     else
