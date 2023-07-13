@@ -44,16 +44,16 @@
 
 #if defined(_WIN32)
 #if defined(EPROSIMA_USER_DLL_EXPORT)
-#if defined(HELLOWORLD_SOURCE)
-#define HELLOWORLD_DllAPI __declspec( dllexport )
+#if defined(HelloWorld_SOURCE)
+#define HelloWorld_DllAPI __declspec( dllexport )
 #else
-#define HELLOWORLD_DllAPI __declspec( dllimport )
-#endif // HELLOWORLD_SOURCE
+#define HelloWorld_DllAPI __declspec( dllimport )
+#endif // HelloWorld_SOURCE
 #else
-#define HELLOWORLD_DllAPI
+#define HelloWorld_DllAPI
 #endif  // EPROSIMA_USER_DLL_EXPORT
 #else
-#define HELLOWORLD_DllAPI
+#define HelloWorld_DllAPI
 #endif // _WIN32
 
 namespace eprosima {
@@ -65,7 +65,7 @@ class Cdr;
 
 /*!
  * @brief This class represents the structure HelloWorld defined by the user in the IDL file.
- * @ingroup HelloWorld
+ * @ingroup HELLOWORLD
  */
 class HelloWorld
 {
@@ -147,33 +147,33 @@ public:
      * @param _message New value to be copied in member message
      */
     eProsima_user_DllExport void message(
-            const std::string& _message);
+            const std::array<char, 20>& _message);
 
     /*!
      * @brief This function moves the value in member message
      * @param _message New value to be moved in member message
      */
     eProsima_user_DllExport void message(
-            std::string&& _message);
+            std::array<char, 20>&& _message);
 
     /*!
      * @brief This function returns a constant reference to member message
      * @return Constant reference to member message
      */
-    eProsima_user_DllExport const std::string& message() const;
+    eProsima_user_DllExport const std::array<char, 20>& message() const;
 
     /*!
      * @brief This function returns a reference to member message
      * @return Reference to member message
      */
-    eProsima_user_DllExport std::string& message();
+    eProsima_user_DllExport std::array<char, 20>& message();
 
     /*!
-    * @brief This function returns the maximum serialized size of an object
-    * depending on the buffer alignment.
-    * @param current_alignment Buffer alignment.
-    * @return Maximum serialized size.
-    */
+     * @brief This function returns the maximum serialized size of an object
+     * depending on the buffer alignment.
+     * @param current_alignment Buffer alignment.
+     * @return Maximum serialized size.
+     */
     eProsima_user_DllExport static size_t getMaxCdrSerializedSize(
             size_t current_alignment = 0);
 
@@ -228,9 +228,7 @@ public:
 private:
 
     uint32_t m_index;
-    std::string m_message;
-
+    std::array<char, 20> m_message;
 };
 
 #endif // _FAST_DDS_GENERATED_HELLOWORLD_H_
-
