@@ -126,8 +126,9 @@ std::function<uint32_t()> MyEnumStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MyEnumStruct*>(data))) +
+                           *static_cast<MyEnumStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -277,8 +278,9 @@ std::function<uint32_t()> MyBadEnumStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MyBadEnumStruct*>(data))) +
+                           *static_cast<MyBadEnumStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -429,8 +431,9 @@ std::function<uint32_t()> MyAliasEnumStructPubSubType::getSerializedSizeProvider
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MyAliasEnumStruct*>(data))) +
+                           *static_cast<MyAliasEnumStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -580,8 +583,9 @@ std::function<uint32_t()> BasicStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<BasicStruct*>(data))) +
+                           *static_cast<BasicStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -731,8 +735,9 @@ std::function<uint32_t()> BasicNamesStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<BasicNamesStruct*>(data))) +
+                           *static_cast<BasicNamesStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -882,8 +887,9 @@ std::function<uint32_t()> BasicBadStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<BasicBadStruct*>(data))) +
+                           *static_cast<BasicBadStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -1033,8 +1039,9 @@ std::function<uint32_t()> BasicWideStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<BasicWideStruct*>(data))) +
+                           *static_cast<BasicWideStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -1184,8 +1191,9 @@ std::function<uint32_t()> BadBasicWideStructPubSubType::getSerializedSizeProvide
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<BadBasicWideStruct*>(data))) +
+                           *static_cast<BadBasicWideStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -1335,8 +1343,9 @@ std::function<uint32_t()> StringStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<StringStruct*>(data))) +
+                           *static_cast<StringStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -1486,8 +1495,9 @@ std::function<uint32_t()> LargeStringStructPubSubType::getSerializedSizeProvider
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<LargeStringStruct*>(data))) +
+                           *static_cast<LargeStringStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -1637,8 +1647,9 @@ std::function<uint32_t()> WStringStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<WStringStruct*>(data))) +
+                           *static_cast<WStringStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -1788,8 +1799,9 @@ std::function<uint32_t()> LargeWStringStructPubSubType::getSerializedSizeProvide
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<LargeWStringStruct*>(data))) +
+                           *static_cast<LargeWStringStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -1939,8 +1951,9 @@ std::function<uint32_t()> ArrayStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<ArrayStruct*>(data))) +
+                           *static_cast<ArrayStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -2090,8 +2103,9 @@ std::function<uint32_t()> ArrayStructEqualPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<ArrayStructEqual*>(data))) +
+                           *static_cast<ArrayStructEqual*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -2241,8 +2255,9 @@ std::function<uint32_t()> ArrayBadStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<ArrayBadStruct*>(data))) +
+                           *static_cast<ArrayBadStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -2392,8 +2407,9 @@ std::function<uint32_t()> ArrayDimensionsStructPubSubType::getSerializedSizeProv
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<ArrayDimensionsStruct*>(data))) +
+                           *static_cast<ArrayDimensionsStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -2543,8 +2559,9 @@ std::function<uint32_t()> ArraySizeStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<ArraySizeStruct*>(data))) +
+                           *static_cast<ArraySizeStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -2694,8 +2711,9 @@ std::function<uint32_t()> SequenceStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SequenceStruct*>(data))) +
+                           *static_cast<SequenceStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -2845,8 +2863,9 @@ std::function<uint32_t()> SequenceStructEqualPubSubType::getSerializedSizeProvid
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SequenceStructEqual*>(data))) +
+                           *static_cast<SequenceStructEqual*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -2996,8 +3015,9 @@ std::function<uint32_t()> SequenceBadStructPubSubType::getSerializedSizeProvider
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SequenceBadStruct*>(data))) +
+                           *static_cast<SequenceBadStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -3147,8 +3167,9 @@ std::function<uint32_t()> SequenceBoundsStructPubSubType::getSerializedSizeProvi
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SequenceBoundsStruct*>(data))) +
+                           *static_cast<SequenceBoundsStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -3298,8 +3319,9 @@ std::function<uint32_t()> SequenceSequenceStructPubSubType::getSerializedSizePro
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SequenceSequenceStruct*>(data))) +
+                           *static_cast<SequenceSequenceStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -3449,8 +3471,9 @@ std::function<uint32_t()> SequenceSequenceBoundsStructPubSubType::getSerializedS
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SequenceSequenceBoundsStruct*>(data))) +
+                           *static_cast<SequenceSequenceBoundsStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -3600,8 +3623,9 @@ std::function<uint32_t()> MapStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MapStruct*>(data))) +
+                           *static_cast<MapStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -3751,8 +3775,9 @@ std::function<uint32_t()> MapStructEqualPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MapStructEqual*>(data))) +
+                           *static_cast<MapStructEqual*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -3902,8 +3927,9 @@ std::function<uint32_t()> MapBadKeyStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MapBadKeyStruct*>(data))) +
+                           *static_cast<MapBadKeyStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -4053,8 +4079,9 @@ std::function<uint32_t()> MapBadElemStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MapBadElemStruct*>(data))) +
+                           *static_cast<MapBadElemStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -4204,8 +4231,9 @@ std::function<uint32_t()> MapBoundsStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MapBoundsStruct*>(data))) +
+                           *static_cast<MapBoundsStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -4355,8 +4383,9 @@ std::function<uint32_t()> MapMapStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MapMapStruct*>(data))) +
+                           *static_cast<MapMapStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -4506,8 +4535,9 @@ std::function<uint32_t()> MapMapBoundsStructPubSubType::getSerializedSizeProvide
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MapMapBoundsStruct*>(data))) +
+                           *static_cast<MapMapBoundsStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -4662,8 +4692,9 @@ std::function<uint32_t()> SimpleUnionStructPubSubType::getSerializedSizeProvider
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SimpleUnionStruct*>(data))) +
+                           *static_cast<SimpleUnionStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -4813,8 +4844,9 @@ std::function<uint32_t()> SimpleUnionStructEqualPubSubType::getSerializedSizePro
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SimpleUnionStructEqual*>(data))) +
+                           *static_cast<SimpleUnionStructEqual*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -4964,8 +4996,9 @@ std::function<uint32_t()> SimpleUnionNamesStructPubSubType::getSerializedSizePro
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SimpleUnionNamesStruct*>(data))) +
+                           *static_cast<SimpleUnionNamesStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -5115,8 +5148,9 @@ std::function<uint32_t()> SimpleTypeUnionStructPubSubType::getSerializedSizeProv
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SimpleTypeUnionStruct*>(data))) +
+                           *static_cast<SimpleTypeUnionStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -5266,8 +5300,9 @@ std::function<uint32_t()> SimpleBadUnionStructPubSubType::getSerializedSizeProvi
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SimpleBadUnionStruct*>(data))) +
+                           *static_cast<SimpleBadUnionStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -5417,8 +5452,9 @@ std::function<uint32_t()> SimplBadDiscUnionStructPubSubType::getSerializedSizePr
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SimplBadDiscUnionStruct*>(data))) +
+                           *static_cast<SimplBadDiscUnionStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }

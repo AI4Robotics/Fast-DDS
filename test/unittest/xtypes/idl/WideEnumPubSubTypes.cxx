@@ -126,8 +126,9 @@ std::function<uint32_t()> MyEnumWideStructPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<MyEnumWideStruct*>(data))) +
+                           *static_cast<MyEnumWideStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -278,8 +279,9 @@ std::function<uint32_t()> SimpleWideUnionStructPubSubType::getSerializedSizeProv
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<SimpleWideUnionStruct*>(data))) +
+                           *static_cast<SimpleWideUnionStruct*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }

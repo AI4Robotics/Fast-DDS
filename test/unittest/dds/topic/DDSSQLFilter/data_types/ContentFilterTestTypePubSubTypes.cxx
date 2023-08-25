@@ -126,8 +126,9 @@ std::function<uint32_t()> StructTypePubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<StructType*>(data))) +
+                           *static_cast<StructType*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }
@@ -279,8 +280,9 @@ std::function<uint32_t()> ContentFilterTestTypePubSubType::getSerializedSizeProv
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<ContentFilterTestType*>(data))) +
+                           *static_cast<ContentFilterTestType*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }

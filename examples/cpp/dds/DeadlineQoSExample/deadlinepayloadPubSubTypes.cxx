@@ -126,8 +126,9 @@ std::function<uint32_t()> HelloMsgPubSubType::getSerializedSizeProvider(
            {
                eprosima::fastcdr::CdrSizeCalculator calculator(
                        data_representation == DataRepresentationId_t::XCDR_DATA_REPRESENTATION ? eprosima::fastcdr::CdrVersion::XCDRv1 :eprosima::fastcdr::CdrVersion::XCDRv2);
+               size_t current_alignment {0};
                return static_cast<uint32_t>(calculator.calculate_serialized_size(
-                           *static_cast<HelloMsg*>(data))) +
+                           *static_cast<HelloMsg*>(data), current_alignment)) +
                             4u /*encapsulation*/;
            };
 }

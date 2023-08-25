@@ -38,30 +38,28 @@ template<>
 eProsima_user_DllExport size_t calculate_serialized_size(
         eprosima::fastcdr::CdrSizeCalculator& calculator,
         const Topic& data,
-        size_t current_alignment)
+        size_t& current_alignment)
 {
-    static_cast<void>(calculator);
     static_cast<void>(data);
-    size_t initial_alignment = current_alignment;
 
     eprosima::fastcdr::EncodingAlgorithmFlag previous_encoding = calculator.get_encoding();
-    current_alignment += calculator.begin_calculate_type_serialized_size(
+    size_t calculated_size {calculator.begin_calculate_type_serialized_size(
             eprosima::fastcdr::CdrVersion::XCDRv2 == calculator.get_cdr_version() ?
             eprosima::fastcdr::EncodingAlgorithmFlag::DELIMIT_CDR2
  :
             eprosima::fastcdr::EncodingAlgorithmFlag::PLAIN_CDR
 ,
-            current_alignment);
+            current_alignment)};
 
 
-                current_alignment += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0), data.index(), current_alignment);
+                calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(0), data.index(), current_alignment);
 
-                current_alignment += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1), data.message(), current_alignment);
+                calculated_size += calculator.calculate_member_serialized_size(eprosima::fastcdr::MemberId(1), data.message(), current_alignment);
 
 
-    current_alignment += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
+    calculated_size += calculator.end_calculate_type_serialized_size(previous_encoding, current_alignment);
 
-    return current_alignment - initial_alignment;
+    return calculated_size;
 }
 
 template<>
