@@ -402,7 +402,8 @@ add_subdirectory(test)
 ###############################################################################
 # Examples
 ###############################################################################
-option(COMPILE_EXAMPLES "Build example" OFF)
+# option(COMPILE_EXAMPLES "Build example" OFF)
+option(COMPILE_EXAMPLES "Build example" ON)
 
 if(EPROSIMA_BUILD)
     set(COMPILE_EXAMPLES ON)
@@ -565,7 +566,8 @@ install(FILES ${PROJECT_SOURCE_DIR}/resources/xsd/fastdds_static_discovery.xsd
     COMPONENT xsd
     )
 
-option(INSTALL_EXAMPLES "Install example" OFF)
+# option(INSTALL_EXAMPLES "Install example" OFF)
+option(INSTALL_EXAMPLES "Install example" ON)
 
 if(INSTALL_EXAMPLES)
   # Install examples
@@ -607,3 +609,6 @@ if(BUILD_DOCUMENTATION)
             )
     endif()
 endif()
+
+# cmake -S . -B build -DCMAKE_INSTALL_PREFIX=~/source/ai4robotics_lab/Fast-DDS/install
+# cmake --build build/ --target install
